@@ -6,18 +6,28 @@ import { PrismaClient } from '@prisma/client'
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private jwtService: JwtService,
-        private configService: ConfigService,
-        // private prisma: PrismaClient = new PrismaClient()
-    ) { }
+    // constructor(
+    //     private jwtService: JwtService,
+    //     private configService: ConfigService,
+    //     // private prisma: PrismaClient = new PrismaClient()
+    // ) { }
+    private prisma: PrismaClient = new PrismaClient()
+
     login(data): string {
-        let token = this.jwtService.sign({ data }, { secret: this.configService.get('SECRET_KEY'), expiresIn: "10m" })
+        // let token = this.jwtService.sign({ data }, { secret: this.configService.get('SECRET_KEY'), expiresIn: "10m" })
+        let token = "token"
         return token
     }
 
-    signup(data): string {
-        return "signed up"
+
+
+    async signup(data): Promise<any> {
+        try {
+            await this.prisma.user.create({ data })
+            return "signed up!"
+        } catch (error) {
+            return "error"
+        }
     }
 
 

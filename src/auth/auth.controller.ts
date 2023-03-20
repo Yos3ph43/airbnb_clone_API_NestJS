@@ -1,4 +1,4 @@
-import { Controller, Post, Get } from '@nestjs/common';
+import { Controller, Post, Get, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -13,7 +13,9 @@ export class AuthController {
     }
 
     @Post('signup')
-    signup(data): string {
+    signup(
+        @Body() data: Promise<any>
+    ): any {
         return this.authService.signup(data)
     }
 
