@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt/dist'
 import { ConfigService } from '@nestjs/config'
-import { PrismaClient } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service'
 import * as bcrypt from 'bcrypt'
 
@@ -15,14 +14,11 @@ export class AuthService {
     ) { }
 
     async login(data): Promise<any> {
-
         try {
             const { email, password } = data
             //check mail
             const check = await this.prisma.user.findFirst({
-                where: {
-                    email
-                }
+                where: { email }
             })
             console.log(check);
             if (!check) return new HttpException("Invalid email!", 200)
