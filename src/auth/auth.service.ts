@@ -2,20 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt/dist';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client'
+import { PrismaService } from '../prisma/prisma.service';
 
 
 @Injectable()
 export class AuthService {
-    // constructor(
-    //     private jwtService: JwtService,
-    //     private configService: ConfigService,
-    //     // private prisma: PrismaClient = new PrismaClient()
-    // ) { }
-    private prisma: PrismaClient = new PrismaClient()
+    constructor(
+        private jwtService: JwtService,
+        private configService: ConfigService,
+        private prisma: PrismaService
+    ) { }
 
     login(data): string {
-        // let token = this.jwtService.sign({ data }, { secret: this.configService.get('SECRET_KEY'), expiresIn: "10m" })
-        let token = "token"
+        let token = this.jwtService.sign({ data }, { secret: this.configService.get('SECRET_KEY'), expiresIn: "10m" })
+        // let token = "token"
         return token
     }
 
