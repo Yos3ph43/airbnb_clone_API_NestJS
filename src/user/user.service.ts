@@ -10,4 +10,9 @@ export class UserService {
     getUser(): Promise<UserDto[]> {
         return this.prisma.user.findMany()
     }
+
+    addUser(name: string,): Promise<UserDto[]> {
+
+        return this.prisma.user.create()
+    }
 }
