@@ -21,8 +21,5 @@ export class AuthController {
         return this.authService.signup(data)
     }
 
-    @Get('getSome')
-    getSome() {
-        return "getsome"
-    }
+
 }
