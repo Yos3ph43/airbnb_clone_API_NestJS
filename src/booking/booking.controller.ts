@@ -13,4 +13,5 @@ export class BookingController {
     ): Promise<any> {
         return this.bookingService.getBookingByUserId(user_id)
     }
+
 }

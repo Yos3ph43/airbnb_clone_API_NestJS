@@ -14,7 +14,6 @@ export class BookingService {
                 }
             })
         } catch (error) {
-            console.log(error);
             return new HttpException("Hư", 500)
         }
     }
