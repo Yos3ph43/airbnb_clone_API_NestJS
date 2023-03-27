@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common/decorators';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
-
+import { UserSearchPagination } from './dto/userSearchPagination.dto'
 @Controller('user')
 export class UserController {
     constructor(
@@ -23,4 +23,8 @@ export class UserController {
         return this.userService.deleteUser(user_id)
     }
 
+    @Get('getSearchPagination')
+    getSearchPagination(@Body() input: UserSearchPagination): Promise<UserSearchPagination[]> {
+        return this.userService.getSearchPagination(input)
+    }
 }
