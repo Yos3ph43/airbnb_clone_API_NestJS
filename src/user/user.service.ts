@@ -1,20 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client'
-import { connect } from 'http2';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDto } from './dto/user.dto';
 import { UserSearchPagination } from './dto/userSearchPagination.dto';
 
 @Injectable()
 export class UserService {
-
-    private prisma: PrismaClient = new PrismaClient()
+    constructor(
+        private prisma: PrismaService
+    ) { }
 
     async getUser(): Promise<any> {
         try {
             const data = await this.prisma.user.findMany()
             return new HttpException({ data, message: "Get user success" }, 200)
+
         } catch (error) {
-            return new HttpException({ reason: error }, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -28,7 +29,7 @@ export class UserService {
             }
             return new HttpException("Email already used", 401)
         } catch (error) {
-            return new HttpException({ message: error }, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
 
         }
     }
@@ -38,27 +39,64 @@ export class UserService {
             const checkUserId = await this.prisma.user.findFirst({
                 where: { user_id: Number(user_id) }
             })
-            if (!checkUserId) return new HttpException("User already deleted or not existed", 401)
+            if (!checkUserId) return new HttpException("User already deleted or not existed", HttpStatus.NOT_FOUND)
 
             const data = await this.prisma.user.delete({
                 where: { user_id: Number(user_id) }
             })
             return new HttpException({ data, message: "User deleted" }, 200)
         } catch (error) {
-            return new HttpException({ message: error }, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
         }
     }
 
-    //chưa biết làm pageIndex (trang số Index)
     async getSearchPagination(input: UserSearchPagination): Promise<any> {
         try {
             const data = { ...input }
             const dataSearch = await this.prisma.user.findMany({
-                where: { name: { contains: data.keyword } }, take: data.pageSize
+                where: { name: { contains: data.keyword } }, take: data.pageSize, skip: (data.pageIndex - 1) * data.pageSize
             })
             return new HttpException({ dataSearch, message: "Get search pagination success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException({ message: error }, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
+        }
+    }
+    async getUserById(user_id: string): Promise<any> {
+        try {
+            const data = await this.prisma.user.findFirst({
+                where: { user_id: Number(user_id) }
+            })
+            if (!data) return new HttpException("User already deleted or not existed", HttpStatus.NOT_FOUND)
+
+            return new HttpException({ data, message: "Get user by ID success" }, HttpStatus.OK)
+        } catch (error) {
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    async updateUser(user_id: string, input: UserDto): Promise<any> {
+        try {
+            const data = { ...input }
+            await this.prisma.user.update({
+                data,
+                where: { user_id: Number(user_id) }
+            })
+            return new HttpException({ data, message: "User updated" }, HttpStatus.OK)
+        } catch (error) {
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    async searchUser(user_name: string): Promise<any> {
+        try {
+            const data = await this.prisma.user.findMany({
+                where: {
+                    name: { contains: user_name }
+                }
+            })
+            return new HttpException(data, HttpStatus.OK)
+        } catch (error) {
+            return new HttpException(error, HttpStatus.BAD_REQUEST)
         }
     }
 }
