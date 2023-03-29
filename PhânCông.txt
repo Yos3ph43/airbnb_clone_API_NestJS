@@ -1,0 +1,30 @@
+Airbnb APIs
+
+1/Đặng Nguyễn Minh Luân:
+    Auth
+         -POST /api/auth/login
+
+         -POST /api/auth/signup
+    Comment
+         - GET /api/comment/getComment
+
+         - GET /api/comment/getCommentByRoom/{room_id}
+
+         - POST /api/comment/postComment/{room_id}/{user_id}
+
+         - PUT /api/comment/updateComment/{comment_id}
+
+         - DELETE /api/comment/deleteComment/{comment_id}
+
+    Booking
+        - GET /api/booking/getBookingByUserId/{user_id}
+
+        - GET /api/booking/getBooking
+
+        - GET /api/booking/getBookingById/{booking_id}
+
+        - POST /api/booking/postBooking/{room_id}/{user_id}
+
+        - PUT /api/booking/updateBooking/{booking_id}
+
+        - DELETE /api/booking/deleteBooking/{booking_id}
