@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service'
+import { CommentDto, PostCommentBody } from './dto/comment.dto';
 
 @Injectable()
 export class CommentService {
@@ -7,7 +8,7 @@ export class CommentService {
         private prisma: PrismaService
     ) { }
 
-    async getComment(): Promise<any> {
+    async getComment(): Promise<CommentDto[] | HttpException> {
         try {
             const data = await this.prisma.comment.findMany()
             return data
@@ -17,7 +18,7 @@ export class CommentService {
         }
     }
 
-    async getCommentByRoom(room_id): Promise<any> {
+    async getCommentByRoom(room_id): Promise<CommentDto[] | HttpException> {
         try {
             const data = await this.prisma.comment.findMany({
                 where: {
@@ -31,7 +32,7 @@ export class CommentService {
         }
     }
 
-    async postComment(input: any, roomId: string, userId: string) {
+    async postComment(input: PostCommentBody, roomId: string, userId: string): Promise<HttpException> {
         try {
             const room_id = Number(roomId)
             const user_id = Number(userId)
@@ -45,7 +46,7 @@ export class CommentService {
         }
     }
 
-    async updateComment(comment_id: string, input: any) {
+    async updateComment(comment_id: string, input: PostCommentBody) {
         try {
             await this.prisma.comment.update({
                 data: input,

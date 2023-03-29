@@ -1,12 +1,15 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { BookingBody, BookingDto } from './dto/booking.dto';
 
+@UseGuards(AuthGuard('jwt'))
 @Injectable()
 export class BookingService {
     constructor(
         private prisma: PrismaService
     ) { }
-    async getBookingByUserId(user_id): Promise<any> {
+    async getBookingByUserId(user_id: string): Promise<BookingDto[] | HttpException> {
         try {
             return await this.prisma.booking.findMany({
                 where: {
@@ -18,29 +21,29 @@ export class BookingService {
         }
     }
 
-    async getBooking(): Promise<any> {
+    async getBooking(): Promise<BookingDto[] | HttpException> {
         try {
             const data = await this.prisma.booking.findMany()
-            return new HttpException({ data, message: "Success" }, 200)
+            return new HttpException({ data, message: "Success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException("Lỗi gì òi :((", 500)
+            return new HttpException("Interal Server Error :((", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
-    async getBookingById(booking_id: string): Promise<any> {
+    async getBookingById(booking_id: string): Promise<HttpException> {
         try {
             const data = await this.prisma.booking.findMany({
                 where: {
                     booking_id: Number(booking_id)
                 }
             })
-            return new HttpException({ data, message: "Success" }, 200)
+            return new HttpException({ data, message: "Success" }, HttpStatus.OK)
         } catch (error) {
             return new HttpException("Lỗi gì òi :((", 500)
         }
     }
 
-    async postBooking(input: any, room_id: string, user_id: string): Promise<any> {
+    async postBooking(input: BookingBody, room_id: string, user_id: string): Promise<HttpException> {
         try {
             const data = {
                 ...input,
@@ -56,7 +59,7 @@ export class BookingService {
         }
     }
 
-    async updateBooking(data: any, booking_id: string): Promise<any> {
+    async updateBooking(data: BookingBody, booking_id: string): Promise<HttpException> {
         try {
             await this.prisma.booking.update({
                 data,
@@ -70,7 +73,7 @@ export class BookingService {
             return new HttpException("Lỗi gì òi :((", 500)
         }
     }
-    async deleteBooking(booking_id): Promise<any> {
+    async deleteBooking(booking_id: string): Promise<HttpException> {
         try {
             await this.prisma.booking.delete({
                 where: {

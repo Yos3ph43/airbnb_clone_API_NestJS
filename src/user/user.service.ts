@@ -1,8 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDto } from './dto/user.dto';
 import { UserSearchPagination } from './dto/userSearchPagination.dto';
 
+@UseGuards(AuthGuard('jwt'))
 @Injectable()
 export class UserService {
     constructor(
