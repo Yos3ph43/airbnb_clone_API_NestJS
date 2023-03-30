@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common/decorators';
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common/decorators';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { UserSearchPagination } from './dto/userSearchPagination.dto'
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 @Controller('user')
 export class UserController {
     constructor(
@@ -46,4 +49,38 @@ export class UserController {
         @Param('user_name') user_name: string): Promise<UserDto[]> {
         return this.userService.searchUser(user_name)
     }
+    //uploadAvatar
+    // @Post('uploadAvatar/:user_id')
+    // uploadAvatar(
+    //     @Param('user_id') user_id: string): Promise<UserDto[]> {
+    //     return this.userService.updateAvatar(user_id)
+    // }
+    @Post('/upload')
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './upload',
+            filename: (req, file, cb) => {
+                const newfileName = Date.now() + extname(file.originalname);
+                cb(null, newfileName);
+            }
+        })
+    }))
+    uploadAvatar(
+        // @Param('user_id') user_id: string,
+        // @Body() input: UserDto,
+        @UploadedFile() file: Express.Multer.File
+    ) {
+        try {
+            // console.log(file);
+            console.log('file', file);
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+        // return { input, file: file.buffer.toString() }
+    }
 }
+
+

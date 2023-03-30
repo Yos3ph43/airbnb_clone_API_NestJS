@@ -101,4 +101,28 @@ export class UserService {
             return new HttpException(error, HttpStatus.BAD_REQUEST)
         }
     }
+
+    //uploadAvatar
+    // async updateAvatar(user_id: string): Promise<any> {
+    //     try {
+
+    //     } catch (error) {
+    //         return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+    //     }
+    // }
+    async updateAvatar(user_id: string, input: UserDto, file: Express.Multer.File): Promise<any> {
+        try {
+            console.log(file);
+
+            const data = await this.prisma.user.update({
+                data: file.buffer.toString(),
+                where: { user_id: Number(user_id) }
+            })
+            console.log(data);
+            return data
+
+        } catch (error) {
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
 }

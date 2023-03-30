@@ -7,4 +7,5 @@ export interface UserDto {
     birthday: string
     gender: string
     role: string
+    avatar: string
 }
