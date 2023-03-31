@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "1af55752-2761-47a4-8f3f-da99e5f9ccf9",
+		"name": "airbnb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getBookingByUserId(user_id)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/api/booking/getBookingByUserId/:user_id",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"booking",
+						"getBookingByUserId",
+						":user_id"
+					],
+					"variable": [
+						{
+							"key": "user_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/api/user/getUser",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"getUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string234\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/user/addUser",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"addUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUser (user_id)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/user/deleteUser/:user_id",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"deleteUser",
+						":user_id"
+					],
+					"variable": [
+						{
+							"key": "user_id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userSearchPagination",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pageIndex\": 3,\r\n    \"pageSize\": 3,\r\n    \"keyword\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/user/getSearchPagination",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"getSearchPagination"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserById (user_id)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/api/user/getUserById/:user_id",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"getUserById",
+						":user_id"
+					],
+					"variable": [
+						{
+							"key": "user_id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser (user_id)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string234\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\",\r\n    \"avatar\":null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/user/updateUser/:user_id",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"updateUser",
+						":user_id"
+					],
+					"variable": [
+						{
+							"key": "user_id",
+							"value": "30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchUser (user_id)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/user/searchUser/:user_name",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"searchUser",
+						":user_name"
+					],
+					"variable": [
+						{
+							"key": "user_name",
+							"value": "bao"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadAvatar (user_id)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileUpload",
+							"type": "file",
+							"src": "/C:/Users/luong/Desktop/20230215223121_1.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/user/uploadAvatar/:user_id",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"uploadAvatar",
+						":user_id"
+					],
+					"variable": [
+						{
+							"key": "user_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRoom",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/api/room/getRoom",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"room",
+						"getRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"location_id\": 1,\r\n    \"room_name\": \"string\",\r\n    \"guests\": 1,\r\n    \"bedrooms\": 1,\r\n    \"beds\": 1,\r\n    \"bathrooms\": 1,\r\n    \"description\": \"string\",\r\n    \"price\": 1,\r\n    \"washer\": 1,\r\n    \"iron\": 1,\r\n    \"television\": 1,\r\n    \"air_con\": 1,\r\n    \"wifi\": 1,\r\n    \"kitchen\": 1,\r\n    \"parking_lot\": 1,\r\n    \"pool\": 1,\r\n    \"image\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/room/addRoom",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"room",
+						"addRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRoomByLocationId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"location_id\": 1,\r\n    \"room_name\": \"string\",\r\n    \"guests\": 1,\r\n    \"bedrooms\": 1,\r\n    \"beds\": 1,\r\n    \"bathrooms\": 1,\r\n    \"description\": \"string\",\r\n    \"price\": 1,\r\n    \"washer\": 1,\r\n    \"iron\": 1,\r\n    \"television\": 1,\r\n    \"air_con\": 1,\r\n    \"wifi\": 1,\r\n    \"kitchen\": 1,\r\n    \"parking_lot\": 1,\r\n    \"pool\": 1,\r\n    \"image\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/room/getRoomByLocationId/:location_id",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"room",
+						"getRoomByLocationId",
+						":location_id"
+					],
+					"variable": [
+						{
+							"key": "location_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "localhost:8080",
+			"type": "default"
+		}
+	]
+}

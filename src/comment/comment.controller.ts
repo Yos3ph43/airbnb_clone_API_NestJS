@@ -1,11 +1,12 @@
 import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger/dist/decorators';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger/dist/decorators';
 import { CommentService } from './comment.service';
 import { CommentDto, PostCommentBody } from './dto/comment.dto';
 
 @ApiTags('Comment')
 @UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
 @Controller('comment')
 export class CommentController {
     constructor(private commentService: CommentService) { }

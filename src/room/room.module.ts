@@ -4,6 +4,7 @@ import { RoomController } from "./room.controller";
 import { RoomService } from "./room.service";
 
 @Module({
-    controllers: [RoomController], providers: [RoomService, PrismaService]
+    controllers: [RoomController],
+    providers: [RoomService, PrismaService]
 })
 export class RoomModule { }

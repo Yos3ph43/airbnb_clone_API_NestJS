@@ -1,17 +1,16 @@
 import { HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { async } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserDto } from './dto/user.dto';
-import { UserSearchPagination } from './dto/userSearchPagination.dto';
+import { UserDto, UserDtoBody, UserSearchPagination, UserSearchPaginationBody } from './dto/user.dto';
 
-@UseGuards(AuthGuard('jwt'))
 @Injectable()
 export class UserService {
     constructor(
         private prisma: PrismaService
     ) { }
 
-    async getUser(): Promise<any> {
+    async getUser(): Promise<UserDto[] | HttpException> {
         try {
             const data = await this.prisma.user.findMany()
             return new HttpException({ data, message: "Get user success" }, 200)
@@ -21,7 +20,7 @@ export class UserService {
         }
     }
 
-    async addUser(input: UserDto): Promise<any> {
+    async addUser(input: UserDtoBody): Promise<UserDto[] | HttpException> {
         try {
             const data = { ...input }
             const checkEmail = await this.prisma.user.findFirst({ where: { email: data.email } })
@@ -36,7 +35,7 @@ export class UserService {
         }
     }
 
-    async deleteUser(user_id: string): Promise<any> {
+    async deleteUser(user_id: string): Promise<UserDto[] | HttpException> {
         try {
             const checkUserId = await this.prisma.user.findFirst({
                 where: { user_id: Number(user_id) }
@@ -52,7 +51,7 @@ export class UserService {
         }
     }
 
-    async getSearchPagination(input: UserSearchPagination): Promise<any> {
+    async getSearchPagination(input: UserSearchPaginationBody): Promise<UserSearchPagination[] | HttpException> {
         try {
             const data = { ...input }
             const dataSearch = await this.prisma.user.findMany({
@@ -63,7 +62,7 @@ export class UserService {
             return new HttpException(error, HttpStatus.BAD_REQUEST)
         }
     }
-    async getUserById(user_id: string): Promise<any> {
+    async getUserById(user_id: string): Promise<UserDto[] | HttpException> {
         try {
             const data = await this.prisma.user.findFirst({
                 where: { user_id: Number(user_id) }
@@ -76,7 +75,7 @@ export class UserService {
         }
     }
 
-    async updateUser(user_id: string, input: UserDto): Promise<any> {
+    async updateUser(user_id: string, input: UserDtoBody): Promise<UserDto[] | HttpException> {
         try {
             const data = { ...input }
             await this.prisma.user.update({
@@ -89,7 +88,7 @@ export class UserService {
         }
     }
 
-    async searchUser(user_name: string): Promise<any> {
+    async searchUser(user_name: string): Promise<UserDto[] | HttpException> {
         try {
             const data = await this.prisma.user.findMany({
                 where: {
@@ -103,24 +102,20 @@ export class UserService {
     }
 
     //uploadAvatar
-    // async updateAvatar(user_id: string): Promise<any> {
-    //     try {
-
-    //     } catch (error) {
-    //         return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
-    //     }
-    // }
-    async updateAvatar(user_id: string, input: UserDto, file: Express.Multer.File): Promise<any> {
+    async updateAvatar(user_id: string, file: Express.Multer.File): Promise<Express.Multer.File | HttpException> {
         try {
-            console.log(file);
+            const fs = require('fs');
+            await fs.readFile(process.cwd() + "/public/uploadImg/" + file.filename, async (err, data) => {
+                const fileName = `data:${file.mimetype};base64,${Buffer.from(data.toString("base64"))}`;
 
-            const data = await this.prisma.user.update({
-                data: file.buffer.toString(),
-                where: { user_id: Number(user_id) }
+                fs.unlinkSync(process.cwd() + "/public/uploadImg/" + file.filename);
+
+                await this.prisma.user.update({
+                    data: { avatar: fileName },
+                    where: { user_id: Number(user_id) },
+                })
             })
-            console.log(data);
-            return data
-
+            return new HttpException("Avatar updated", HttpStatus.OK)
         } catch (error) {
             return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }

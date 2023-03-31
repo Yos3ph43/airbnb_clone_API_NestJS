@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from "src/prisma/prisma.service";
-import { RoomDto } from './roomDto/room.dto';
+import { RoomDto, RoomDtoBody } from './roomDto/room.dto';
 
 @Injectable()
 export class RoomService {
@@ -8,7 +8,7 @@ export class RoomService {
         private prisma: PrismaService
     ) { }
 
-    async getRoom(): Promise<any> {
+    async getRoom(): Promise<RoomDto[] | HttpException> {
         try {
             const data = await this.prisma.room.findMany()
             return new HttpException({ data, message: "Get room success" }, HttpStatus.OK)
@@ -17,7 +17,7 @@ export class RoomService {
         }
     }
 
-    async addRoom(input: RoomDto): Promise<any> {
+    async addRoom(input: RoomDtoBody): Promise<RoomDto[] | HttpException> {
         try {
             const data = { ...input }
             await this.prisma.room.create({ data })
@@ -27,7 +27,7 @@ export class RoomService {
         }
     }
 
-    async getRoomByLocationId(location_id: string): Promise<any> {
+    async getRoomByLocationId(location_id: string): Promise<RoomDto[] | HttpException> {
         try {
             const data = await this.prisma.room.findMany({ where: { location_id: Number(location_id) } })
             return new HttpException({ data, message: "Success" }, HttpStatus.OK)
