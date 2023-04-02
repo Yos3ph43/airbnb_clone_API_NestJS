@@ -13,7 +13,7 @@ export class RoomService {
             const data = await this.prisma.room.findMany()
             return new HttpException({ data, message: "Get room success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -23,7 +23,7 @@ export class RoomService {
             await this.prisma.room.create({ data })
             return new HttpException({ data, message: "Add room success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -32,7 +32,7 @@ export class RoomService {
             const data = await this.prisma.room.findMany({ where: { location_id: Number(location_id) } })
             return new HttpException({ data, message: "Success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 }

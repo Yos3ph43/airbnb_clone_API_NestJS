@@ -1,13 +1,19 @@
 {
 	"info": {
-		"_postman_id": "1af55752-2761-47a4-8f3f-da99e5f9ccf9",
-		"name": "airbnb",
+		"_postman_id": "de2143c5-8e81-4f7d-a4c7-0d90d4407a1f",
+		"name": "airbnb_LSB",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "getBookingByUserId(user_id)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -34,6 +40,9 @@
 		{
 			"name": "getUser",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -53,6 +62,9 @@
 		{
 			"name": "addUser",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -81,17 +93,11 @@
 		{
 			"name": "deleteUser (user_id)",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "{{domain}}/api/user/deleteUser/:user_id",
 					"host": [
@@ -119,6 +125,9 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -147,6 +156,9 @@
 		{
 			"name": "getUserById (user_id)",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -173,6 +185,9 @@
 		{
 			"name": "updateUser (user_id)",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -206,11 +221,14 @@
 			"response": []
 		},
 		{
-			"name": "searchUser (user_id)",
+			"name": "searchUser (user_name)",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -246,6 +264,9 @@
 		{
 			"name": "uploadAvatar (user_id)",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -287,6 +308,9 @@
 		{
 			"name": "getRoom",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -306,6 +330,9 @@
 		{
 			"name": "addRoom",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -332,22 +359,13 @@
 			"response": []
 		},
 		{
-			"name": "getRoomByLocationId",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "getRoomByLocationId (location_id)",
 			"request": {
+				"auth": {
+					"type": "bearer"
+				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"location_id\": 1,\r\n    \"room_name\": \"string\",\r\n    \"guests\": 1,\r\n    \"bedrooms\": 1,\r\n    \"beds\": 1,\r\n    \"bathrooms\": 1,\r\n    \"description\": \"string\",\r\n    \"price\": 1,\r\n    \"washer\": 1,\r\n    \"iron\": 1,\r\n    \"television\": 1,\r\n    \"air_con\": 1,\r\n    \"wifi\": 1,\r\n    \"kitchen\": 1,\r\n    \"parking_lot\": 1,\r\n    \"pool\": 1,\r\n    \"image\": \"string\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "{{domain}}/api/room/getRoomByLocationId/:location_id",
 					"host": [
@@ -370,6 +388,9 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer"
+	},
 	"event": [
 		{
 			"listen": "prerequest",

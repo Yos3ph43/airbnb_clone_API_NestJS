@@ -11,13 +11,14 @@ export class BookingService {
     ) { }
     async getBookingByUserId(user_id: string): Promise<BookingDto[] | HttpException> {
         try {
-            return await this.prisma.booking.findMany({
+            const data = await this.prisma.booking.findMany({
                 where: {
                     user_id: Number(user_id)
                 }
             })
+            return new HttpException({ data, message: "Success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException("Hư", 500)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 

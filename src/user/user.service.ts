@@ -13,10 +13,10 @@ export class UserService {
     async getUser(): Promise<UserDto[] | HttpException> {
         try {
             const data = await this.prisma.user.findMany()
-            return new HttpException({ data, message: "Get user success" }, 200)
+            return new HttpException({ data, message: "Get user success" }, HttpStatus.OK)
 
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -26,11 +26,11 @@ export class UserService {
             const checkEmail = await this.prisma.user.findFirst({ where: { email: data.email } })
             if (!checkEmail) {
                 await this.prisma.user.create({ data })
-                return new HttpException({ data, message: "User added" }, 200)
+                return new HttpException({ data, message: "User added" }, HttpStatus.OK)
             }
-            return new HttpException("Email already used", 401)
+            return new HttpException("Email already used", HttpStatus.BAD_REQUEST)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
 
         }
     }
@@ -45,9 +45,9 @@ export class UserService {
             const data = await this.prisma.user.delete({
                 where: { user_id: Number(user_id) }
             })
-            return new HttpException({ data, message: "User deleted" }, 200)
+            return new HttpException({ data, message: "User deleted" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -59,7 +59,7 @@ export class UserService {
             })
             return new HttpException({ dataSearch, message: "Get search pagination success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
     async getUserById(user_id: string): Promise<UserDto[] | HttpException> {
@@ -71,7 +71,7 @@ export class UserService {
 
             return new HttpException({ data, message: "Get user by ID success" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -84,7 +84,7 @@ export class UserService {
             })
             return new HttpException({ data, message: "User updated" }, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -97,7 +97,7 @@ export class UserService {
             })
             return new HttpException(data, HttpStatus.OK)
         } catch (error) {
-            return new HttpException(error, HttpStatus.BAD_REQUEST)
+            return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
