@@ -26,7 +26,7 @@ export class AuthService {
             const isValid = await bcrypt.compare(password, check.password)
             if (!isValid) return new HttpException("Incorrect Password!", 200)
             //generate token
-            const token = this.jwtService.sign({ data: { ...check, password: '****' } }, { secret: this.configService.get('SECRET_KEY'), expiresIn: "10m" })
+            const token = this.jwtService.sign({ data: { ...check, password: '****' } }, { secret: this.configService.get('SECRET_KEY'), expiresIn: "1y" })
             return { token, user: { ...check, password: '****' } }
         } catch (error) {
             console.log(error);

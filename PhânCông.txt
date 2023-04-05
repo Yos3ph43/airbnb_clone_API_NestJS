@@ -28,3 +28,20 @@ Airbnb APIs
         - PUT /api/booking/updateBooking/{booking_id}
 
         - DELETE /api/booking/deleteBooking/{booking_id}
+
+2/Nguyễn Lê Hoàng Hải
+     Room
+          - GET /api/phong-thue/phan-trang-tim-kiem
+          - GET /api/phong-thue/{id}
+          - PUT /api/phong-thue/{id}
+          - DELETE /api/phong-thue/{id}
+          - POST /api/phong-thue/upload-hinh-phong
+
+     Positions
+          - GET /api/vi-tri
+          - POST /api/vi-tri
+          - GET /api/vi-tri/phan-trang-tim-kiem
+          - GET /api/vi-tri/{id}
+          - PUT /api/vi-tri/{id}
+          - DELETE /api/vi-tri/{id}
+          - POST /api/vi-tri/upload-hinh-vitri
