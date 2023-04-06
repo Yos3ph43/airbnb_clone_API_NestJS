@@ -62,20 +62,21 @@ export class RoomService {
   }
 
   async updateRoomById(
-    room_id: number,
-    location_id: number,
     body: RoomDtoBody,
   ): Promise<{ message: string; data: RoomDto[] }> {
     try {
+      const { room_id, location_id } = await body;
       const checkRoomId = await this.prisma.room.findUnique({
         where: { room_id: Number(room_id) },
       });
       if (!checkRoomId) return { message: 'Không tìm thấy Room ID', data: [] };
+
       const checkLocationId = await this.prisma.location.findUnique({
         where: { location_id: Number(location_id) },
       });
       if (!checkLocationId)
         return { message: 'Không tìm thấy Location ID', data: [] };
+        
       const data = {
         room_id: Number(room_id),
         location_id: Number(location_id),
@@ -91,34 +92,48 @@ export class RoomService {
     }
   }
 
-  async updateRoom(
-    body: RoomDtoBody,
-  ): Promise<{ message: string; data: RoomDtoBody[] }> {
+  async deleteRoomById(
+    room_id: number,
+  ): Promise<{ message: string; data: RoomDto[] }> {
     try {
-
-        const data = {...body}
-        console.log(data)
-
-      //   const checkRoomId = await this.prisma.room.findUnique({
-      //     where: { room_id: Number(room_id) },
-      //   });
-      //   if (!checkRoomId) return { message: 'Không tìm thấy Room ID', data: [] };
-      //   const checkLocationId = await this.prisma.location.findUnique({
-      //     where: { location_id: Number(location_id) },
-      //   });
-      //   if (!checkLocationId)
-      //     return { message: 'Không tìm thấy Location ID', data: [] };
-    //   const data = await {
-    //     room_id: Number(room_id),
-    //     // location_id: Number(location_id),
-    //     ...body,
-    //   };
-      await this.prisma.room.update({
-        data,
-        where: { room_id: Number(body.room_id) },
+      const checkRoomId = await this.prisma.room.findUnique({
+        where: { room_id: Number(room_id) },
       });
+      if (!checkRoomId) return { message: 'Không tìm thấy Room ID', data: [] };
 
-      return { message: 'Update thành công!', data: [data] };
+      await this.prisma.booking.deleteMany({
+        where: { room_id: Number(room_id) },
+      });
+      await this.prisma.comment.deleteMany({
+        where: { room_id: Number(room_id) },
+      });
+      const data = await this.prisma.room.delete({
+        where: { room_id: Number(room_id) },
+      });
+      return { message: 'Xóa phòng thuê thành công!', data: [data] };
+    } catch (error) {
+      console.error('Lỗi Backend:', error); // Log lỗi backend
+      throw new HttpException('Lỗi Backend', 500);
+    }
+  }
+
+  async uploadRoomImageById(
+    room_id: number,
+    file: Express.Multer.File,
+  ): Promise<{ message: string; data: Express.Multer.File }> {
+    try {
+      const checkRoomId = await this.prisma.room.findUnique({
+        where: { room_id: Number(room_id) },
+      });
+      if (!checkRoomId)
+        return { message: 'Không tìm thấy Room ID', data: null };
+
+      const image = `http://localhost:8080/public/uploadImg/${file.filename}`;
+      await this.prisma.room.update({
+        data: { image },
+        where: { room_id: Number(room_id) },
+      });
+      return { message: 'Update thành công!', data: file };
     } catch (error) {
       throw new HttpException('Lỗi Backend', 500);
     }

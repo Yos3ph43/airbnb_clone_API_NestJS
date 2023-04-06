@@ -1,6 +1,8 @@
-import { HttpException, UseGuards } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { HttpException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Controller } from '@nestjs/common/decorators/core/controller.decorator';
 import {
+  Delete,
   Get,
   Post,
   Put,
@@ -8,11 +10,13 @@ import {
 import {
   Body,
   Param,
+  UploadedFile,
 } from '@nestjs/common/decorators/http/route-params.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RoomService } from './room.service';
 import { RoomDto, RoomDtoBody } from './roomDto/room.dto';
+import { diskStorage } from 'multer';
 
 @ApiTags('Room')
 @UseGuards(AuthGuard('jwt'))
@@ -46,20 +50,33 @@ export class RoomController {
     return this.roomService.searchRoomById(room_id);
   }
 
-  @Put('/updateRoomById/:room_id/:location_id')
+  @Put('/updateRoomById')
   updateRoomById(
-    @Param('room_id') room_id: number,
-    @Param("location_id") location_id: number,
     @Body() body: RoomDtoBody,
   ): Promise<{ message: string; data: RoomDto[] }> {
-    return this.roomService.updateRoomById(room_id, location_id, body);
+    return this.roomService.updateRoomById(body);
   }
 
-  @Put('/updateRoom/:room_id')
-  updateRoom(
+  @Delete('/deleteRoomById/:room_id')
+  deleteRoomById(
+    @Param('room_id') room_id: number,
+  ): Promise<{ message: string; data: RoomDto[] }> {
+    return this.roomService.deleteRoomById(room_id);
+  }
 
-    @Body() body: RoomDtoBody,
-  ): Promise<{ message: string; data: RoomDtoBody[] }> {
-    return this.roomService.updateRoom( body);
+  @UseInterceptors(
+    FileInterceptor('fileUpdate', {
+      storage: diskStorage({
+        destination: process.cwd() + '/public/uploadImg',
+        filename: (req, file, cb) => cb(null, Date.now() + file.originalname),
+      }),
+    }),
+  )
+  @Post('/uploadRoomImageById/:room_id')
+  updateRoomImageById(
+    @Param('room_id') room_id: number,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<{ message: string; data: Express.Multer.File }> {
+    return this.roomService.uploadRoomImageById(room_id, file);
   }
 }
