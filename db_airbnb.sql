@@ -52,7 +52,7 @@ CREATE TABLE `location` (
   `location_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `picture` longtext COLLATE utf8mb4_unicode_ci,
+  `picture` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`location_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -80,7 +80,7 @@ CREATE TABLE `room` (
   `kitchen` tinyint DEFAULT NULL,
   `parking_lot` tinyint DEFAULT NULL,
   `pool` tinyint DEFAULT NULL,
-  `image` longtext COLLATE utf8mb4_unicode_ci,
+  `image` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`room_id`),
   KEY `location_id` (`location_id`),
   CONSTRAINT `room_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
@@ -100,11 +100,12 @@ CREATE TABLE `user` (
   `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `phone`, `birthday`, `gender`, `role`) VALUES
-(1,	'luanminh',	'luan43@mail.mail',	'1234',	'0909-000-999',	'yesterday once more',	'apache',	'admin'),
-(2,	'minhluan',	'luan4334@mail.mail',	'1234',	'9090-999-000',	'1/1/0',	'attack helicopter',	'guest');
+INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `phone`, `birthday`, `gender`, `role`, `avatar`) VALUES
+(1,	'luanminh',	'luan43@mail.mail',	'1234',	'0909-000-999',	'yesterday once more',	'apache',	'admin',	NULL),
+(2,	'minhluan',	'luan4334@mail.mail',	'1234',	'9090-999-000',	'1/1/0',	'attack helicopter',	'guest',	NULL);
 
--- 2023-03-20 20:02:47
+-- 2023-04-06 09:52:44
