@@ -55,7 +55,7 @@ export class RoomService {
       });
       if (data) {
         return { message: 'Kết quả tìm được!', data: [data] };
-      } else return { message: 'Không tìm thấy!', data: [] };
+      } else return { message: 'Không có Room ID này!', data: [] };
     } catch (error) {
       throw new HttpException('Lỗi Backend', 500);
     }
