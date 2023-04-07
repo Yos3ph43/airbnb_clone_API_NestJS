@@ -64,7 +64,7 @@ INSERT INTO `location` (`location_id`, `location_name`, `city`, `country`, `pict
 DROP TABLE IF EXISTS `room`;
 CREATE TABLE `room` (
   `room_id` int NOT NULL AUTO_INCREMENT,
-  `location_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
   `room_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `guests` int DEFAULT NULL,
   `bedrooms` int DEFAULT NULL,

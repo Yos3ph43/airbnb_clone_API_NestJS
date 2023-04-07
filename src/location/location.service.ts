@@ -47,9 +47,71 @@ export class LocationService {
     }
   }
 
-  async updateLocationById(): Promise<any> {
+  async updateLocationById(
+    body: LocationDtoBody,
+  ): Promise<{ message: string; data: LocationDto[] }> {
     try {
-        
-    } catch (error) {}
+      const { location_id } = body;
+      const checkLocationId = await this.prisma.location.findUnique({
+        where: { location_id: Number(location_id) },
+      });
+      if (!checkLocationId)
+        return { message: 'Không tìm thấy Location ID!', data: [] };
+      const data = { ...body };
+      await this.prisma.location.update({
+        data,
+        where: { location_id: Number(location_id) },
+      });
+      return { message: 'Update thành công!', data: [data] };
+    } catch (error) {
+      throw new HttpException('Lỗi Backend!', 500);
+    }
+  }
+
+  async deleteLocationbyId(
+    location_id: number,
+  ): Promise<{ message: string; data: LocationDto[] }> {
+    try {
+      const checkLocationId = await this.prisma.location.findUnique({
+        where: { location_id: Number(location_id) },
+      });
+      if (!checkLocationId)
+        return { message: 'Không tìm thấy Location ID', data: null };
+
+      await this.prisma.room.updateMany({
+        where: { location_id: Number(location_id) },
+        data: { location_id:  null },
+      });
+      const data = await this.prisma.location.delete({
+        where: { location_id: Number(location_id) },
+      });
+
+      return { message: 'Xóa thành công!', data: [data] };
+    } catch (error) {
+      console.error(error); //Log lỗi backend
+      throw new HttpException('Lỗi Backend!', 500);
+    }
+  }
+
+  async uploadLocationPictureById(
+    location_id: number,
+    file: Express.Multer.File,
+  ): Promise<{ message: string; data: Express.Multer.File }> {
+    try {
+      const checkLocationId = await this.prisma.location.findUnique({
+        where: { location_id: Number(location_id) },
+      });
+      if (!checkLocationId)
+        return { message: 'Không tìm thấy Location ID', data: null };
+
+      const picture = `http://localhost:8080/public/uploadImg/${file.filename}`;
+      await this.prisma.location.update({
+        data: { picture },
+        where: { location_id: Number(location_id) },
+      });
+      return { message: 'Thêm hình ảnh thành công!', data: file };
+    } catch (error) {
+      throw new HttpException('Lỗi Backend!', 500);
+    }
   }
 }

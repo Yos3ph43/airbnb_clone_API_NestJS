@@ -76,12 +76,8 @@ export class RoomService {
       });
       if (!checkLocationId)
         return { message: 'Không tìm thấy Location ID', data: [] };
-        
-      const data = {
-        room_id: Number(room_id),
-        location_id: Number(location_id),
-        ...body,
-      };
+
+      const data = { ...body };
       await this.prisma.room.update({
         data,
         where: { room_id: Number(room_id) },

@@ -42,6 +42,6 @@ Airbnb APIs
         - POST /api/vi-tri (postLocation)
         - GET /api/vi-tri/phan-trang-tim-kiem
         - GET /api/vi-tri/{id} (searchLocationById)
-        - PUT /api/vi-tri/{id}
-        - DELETE /api/vi-tri/{id}
-        - POST /api/vi-tri/upload-hinh-vitri
+        - PUT /api/vi-tri/{id} (updateLocationById)
+        - DELETE /api/vi-tri/{id} (deleteLocationbyId)
+        - POST /api/vi-tri/upload-hinh-vitri (uploadLocationPictureById)

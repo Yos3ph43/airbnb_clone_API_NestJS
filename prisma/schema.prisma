@@ -46,7 +46,7 @@ model location {
 
 model room {
   room_id     Int       @id @default(autoincrement())
-  location_id Int
+  location_id Int?
   room_name   String?   @db.VarChar(255)
   guests      Int?
   bedrooms    Int?
@@ -65,7 +65,7 @@ model room {
   image       String?   @db.LongText
   booking     booking[]
   comment     comment[]
-  location    location  @relation(fields: [location_id], references: [location_id], onDelete: NoAction, onUpdate: NoAction, map: "room_ibfk_1")
+  location    location? @relation(fields: [location_id], references: [location_id], onDelete: NoAction, onUpdate: NoAction, map: "room_ibfk_1")
 
   @@index([location_id], map: "location_id")
 }
