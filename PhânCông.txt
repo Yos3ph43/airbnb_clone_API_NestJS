@@ -47,8 +47,19 @@ Airbnb APIs
         - POST /api/vi-tri/upload-hinh-vitri (uploadLocationPictureById)
 
 3/Lương Sỹ Bảo
+     Booking
+        - GET /api/booking/getBookingByUserId/:user_id
+     User 
+        - GET /api/user/getUser
+        - POST /api/user/addUser
+        - DELETE /api/user/deleteUser/:user_id
+        - GET /api/user/getSearchPagination
+        - GET /api/user/getUserById/:user_id
+        - PUT /api/user/updateUser/:user_id
+        - GET /api/user/searchUser/:user_name
+        - POST /api/user/uploadAvatar/:user_id
      Room
-        - 
-        - 
-        -
+        - GET /api/room/getRoom
+        - POST /api/room/addRoom
+        - GET /api/room/getRoomByLocationId/:location_id
      
