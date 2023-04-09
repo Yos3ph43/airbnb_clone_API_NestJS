@@ -8,6 +8,17 @@ export interface LocationDto {
   picture: string;
 }
 
+export class PostDtoBody {
+  @ApiProperty({ description: 'location_name', type: String })
+  location_name: string;
+  @ApiProperty({ description: 'city', type: String })
+  city: string;
+  @ApiProperty({ description: 'country', type: String })
+  country: string;
+  @ApiProperty({ description: 'picture', type: String })
+  picture: string;
+}
+
 export class LocationDtoBody {
   @ApiProperty({ description: 'location_id', type: Number })
   location_id: number;

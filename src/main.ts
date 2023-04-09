@@ -9,7 +9,7 @@ async function bootstrap() {
   app.use(express.static('.'))
   app.setGlobalPrefix('api')
 
-  const config = new DocumentBuilder().setTitle("Swagger").addBearerAuth().setVersion("1000").build();
+  const config = new DocumentBuilder().setTitle("Swagger").addBearerAuth().setVersion("1.0").build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("/swagger", app, document);
 

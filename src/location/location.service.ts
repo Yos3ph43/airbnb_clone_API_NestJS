@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { LocationDto, LocationDtoBody } from './dto/location.dto';
+import { LocationDto, LocationDtoBody, PostDtoBody } from './dto/location.dto';
 
 @Injectable()
 export class LocationService {
@@ -16,17 +16,33 @@ export class LocationService {
   }
 
   async postLocation(
-    file: LocationDtoBody,
-  ): Promise<{ message: string; data: LocationDto[] }> {
+    input: PostDtoBody,
+  ): Promise<{ message: string; data: PostDtoBody[] }> {
     try {
-      const checkLocationId = await this.prisma.location.findUnique({
-        where: { location_id: Number(file.location_id) },
+      const checkLocationName = await this.prisma.location.findFirst({
+        where: { location_name: input.location_name },
       });
-      if (checkLocationId)
-        return { message: 'Location ID đã tồn tại!', data: [] };
-      const data = { ...file };
+      if (checkLocationName)
+        return { message: 'Location Name đã tồn tại!', data: [] };
+      const data = { ...input };
       await this.prisma.location.create({ data });
       return { message: 'Thêm mới vị trí thành công!', data: [data] };
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Lỗi Backend', 500);
+    }
+  }
+
+  async searchLocationPagination(
+    page: number,
+  ): Promise<{ message: string; data: LocationDto[] }> {
+    try {
+      const data = await this.prisma.location.findMany({
+        //dùng take, skip có sẵn trong prisma để phân trang
+        take: 2, //số item trên 1 trang
+        skip: 2 * (page - 1), //khi chọn trang 4 thì bỏ qua 6 item
+      });
+      return { message: 'Kết quả phân trang ' + page, data };
     } catch (error) {
       throw new HttpException('Lỗi Backend', 500);
     }
@@ -80,7 +96,7 @@ export class LocationService {
 
       await this.prisma.room.updateMany({
         where: { location_id: Number(location_id) },
-        data: { location_id:  null },
+        data: { location_id: null },
       });
       const data = await this.prisma.location.delete({
         where: { location_id: Number(location_id) },

@@ -46,6 +46,20 @@ export class RoomService {
 
   /* Coder: Hoàng Hải
     Time: 05/04/2023 */
+  async searchRoomPagination(
+    page: number,
+  ): Promise<{ message: string; data: RoomDto[] }> {
+    try {
+      const data = await this.prisma.room.findMany({
+        take: 2,
+        skip: 2 * (page - 1),
+      });
+      return { message: 'Kết quả phân trang ' + page, data };
+    } catch (error) {
+      throw new HttpException('Lỗi Backend', 500);
+    }
+  }
+
   async searchRoomById(
     room_id: number,
   ): Promise<{ message: string; data: RoomDto[] }> {
@@ -129,7 +143,7 @@ export class RoomService {
         data: { image },
         where: { room_id: Number(room_id) },
       });
-      return { message: 'Update thành công!', data: file };
+      return { message: 'Thêm hình ảnh thành công!', data: file };
     } catch (error) {
       throw new HttpException('Lỗi Backend', 500);
     }

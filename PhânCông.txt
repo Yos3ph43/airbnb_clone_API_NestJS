@@ -31,7 +31,7 @@ Airbnb APIs
 
 2/Nguyễn Lê Hoàng Hải
      Room
-        - GET /api/phong-thue/phan-trang-tim-kiem
+        - GET /api/phong-thue/phan-trang-tim-kiem (searchRoomPagination)
         - GET /api/phong-thue/{id} (searchRoomById)
         - PUT /api/phong-thue/{id} (updateRoomById)
         - DELETE /api/phong-thue/{id} (deleteRoomById)
@@ -40,8 +40,15 @@ Airbnb APIs
      Positions
         - GET /api/vi-tri (getLocation)
         - POST /api/vi-tri (postLocation)
-        - GET /api/vi-tri/phan-trang-tim-kiem
+        - GET /api/vi-tri/phan-trang-tim-kiem (searchLocationPagination)
         - GET /api/vi-tri/{id} (searchLocationById)
         - PUT /api/vi-tri/{id} (updateLocationById)
         - DELETE /api/vi-tri/{id} (deleteLocationbyId)
         - POST /api/vi-tri/upload-hinh-vitri (uploadLocationPictureById)
+
+3/Lương Sỹ Bảo
+     Room
+        - 
+        - 
+        -
+     

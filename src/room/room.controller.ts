@@ -10,12 +10,13 @@ import {
 import {
   Body,
   Param,
+  Query,
   UploadedFile,
 } from '@nestjs/common/decorators/http/route-params.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { RoomService } from './room.service';
-import { RoomDto, RoomDtoBody } from './roomDto/room.dto';
+import { FileUploadDto, RoomDto, RoomDtoBody } from './roomDto/room.dto';
 import { diskStorage } from 'multer';
 
 @ApiTags('Room')
@@ -43,6 +44,13 @@ export class RoomController {
 
   /* Coder: Hoàng Hải
     Time: 05/04/2023 */
+  @Get('/searchRoomPagination')
+  searchRoomPagination(
+    @Query('page') page: number,
+  ): Promise<{ message: string; data: RoomDto[] }> {
+    return this.roomService.searchRoomPagination(page);
+  }
+
   @Get('/searchRoomById/:room_id')
   searchRoomById(
     @Param('room_id') room_id: number,
@@ -64,8 +72,13 @@ export class RoomController {
     return this.roomService.deleteRoomById(room_id);
   }
 
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'File',
+    type: FileUploadDto,
+  })
   @UseInterceptors(
-    FileInterceptor('fileUpdate', {
+    FileInterceptor('fileUpload', {
       storage: diskStorage({
         destination: process.cwd() + '/public/uploadImg',
         filename: (req, file, cb) => cb(null, Date.now() + file.originalname),

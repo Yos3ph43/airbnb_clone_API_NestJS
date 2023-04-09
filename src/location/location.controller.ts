@@ -8,18 +8,24 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import {
   LocationDto,
   LocationDtoBody,
+  PostDtoBody,
   FileUploadDto,
 } from './dto/location.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Location')
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
 @Controller('location')
 export class LocationController {
   constructor(private locationService: LocationService) {}
@@ -32,9 +38,16 @@ export class LocationController {
   @Post('/postLocation')
   postLocation(
     @Body()
-    file: LocationDtoBody,
+    input: PostDtoBody,
+  ): Promise<{ message: string; data: PostDtoBody[] }> {
+    return this.locationService.postLocation(input);
+  }
+
+  @Get('/searchLocationPagination')
+  searchLocationPagination(
+    @Query('page') page: number,
   ): Promise<{ message: string; data: LocationDto[] }> {
-    return this.locationService.postLocation(file);
+    return this.locationService.searchLocationPagination(page);
   }
 
   @Get('/searchLocationById/:location_id')
@@ -58,6 +71,8 @@ export class LocationController {
     return this.locationService.deleteLocationbyId(location_id);
   }
 
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ description: 'File', type: FileUploadDto })
   @UseInterceptors(
     FileInterceptor('fileUpload', {
       storage: diskStorage({

@@ -58,3 +58,8 @@ export class RoomDtoBody {
     @ApiProperty({ description: 'image', type: String })
     image: string
 }
+
+export class FileUploadDto {
+    @ApiProperty({ type: 'string', format: 'binary' })
+    fileUpload: any;
+}
