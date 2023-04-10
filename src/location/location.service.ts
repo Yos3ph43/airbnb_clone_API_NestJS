@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { LocationDto, LocationDtoBody, PostDtoBody } from './dto/location.dto';
+import { LocationDto, LocationDtoBody } from './dto/location.dto';
 
 @Injectable()
 export class LocationService {
@@ -16,8 +16,8 @@ export class LocationService {
   }
 
   async postLocation(
-    input: PostDtoBody,
-  ): Promise<{ message: string; data: PostDtoBody[] }> {
+    input: LocationDtoBody,
+  ): Promise<{ message: string; data: LocationDto[] }> {
     try {
       const checkLocationName = await this.prisma.location.findFirst({
         where: { location_name: input.location_name },
@@ -26,7 +26,18 @@ export class LocationService {
         return { message: 'Location Name đã tồn tại!', data: [] };
       const data = { ...input };
       await this.prisma.location.create({ data });
-      return { message: 'Thêm mới vị trí thành công!', data: [data] };
+      const createdLocation = await this.prisma.location.findFirst({
+        where: {
+          location_name: input.location_name,
+          city: input.city,
+          country: input.country,
+          picture: input.picture,
+        },
+      });
+      return {
+        message: 'Thêm mới vị trí thành công!',
+        data: [createdLocation],
+      };
     } catch (error) {
       console.error(error);
       throw new HttpException('Lỗi Backend', 500);

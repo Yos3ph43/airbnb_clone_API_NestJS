@@ -17,7 +17,6 @@ import { LocationService } from './location.service';
 import {
   LocationDto,
   LocationDtoBody,
-  PostDtoBody,
   FileUploadDto,
 } from './dto/location.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -38,8 +37,8 @@ export class LocationController {
   @Post('/postLocation')
   postLocation(
     @Body()
-    input: PostDtoBody,
-  ): Promise<{ message: string; data: PostDtoBody[] }> {
+    input: LocationDtoBody,
+  ): Promise<{ message: string; data: LocationDto[] }> {
     return this.locationService.postLocation(input);
   }
 
