@@ -1,163 +1,1463 @@
--- Adminer 4.8.1 MySQL 8.0.32 dump
-
-SET NAMES utf8;
-SET time_zone = '+00:00';
-SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
-
-SET NAMES utf8mb4;
-
-DROP TABLE IF EXISTS `booking`;
-CREATE TABLE `booking` (
-  `booking_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `room_id` int NOT NULL,
-  `checkin` datetime NOT NULL,
-  `checkout` datetime NOT NULL,
-  `guests` int NOT NULL,
-  PRIMARY KEY (`booking_id`),
-  KEY `user_id` (`user_id`),
-  KEY `room_id` (`room_id`),
-  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `booking` (`booking_id`, `user_id`, `room_id`, `checkin`, `checkout`, `guests`) VALUES
-(1,	2,	2,	'2023-03-20 20:01:55',	'2023-03-20 20:01:55',	4),
-(2,	1,	2,	'2023-03-20 20:02:10',	'2023-03-20 20:02:10',	12),
-(3,	2,	1,	'2023-03-20 20:02:21',	'2023-03-20 20:02:21',	900);
-
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE `comment` (
-  `comment_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `room_id` int NOT NULL,
-  `comment_date` datetime DEFAULT NULL,
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `star_rating` int DEFAULT NULL,
-  PRIMARY KEY (`comment_id`),
-  KEY `user_id` (`user_id`),
-  KEY `room_id` (`room_id`),
-  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `comment` (`comment_id`, `user_id`, `room_id`, `comment_date`, `content`, `star_rating`) VALUES
-(1,	1,	1,	'2023-03-20 20:00:49',	'it\'s flat bro ',	5),
-(2,	2,	2,	'2023-03-20 20:01:34',	'oh, that\'s hot, that\'s hot',	5);
-
-DROP TABLE IF EXISTS `location`;
-CREATE TABLE `location` (
-  `location_id` int NOT NULL AUTO_INCREMENT,
-  `location_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `picture` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `location` (`location_id`, `location_name`, `city`, `country`, `picture`) VALUES
-(1,	'moon',	'solar system',	'milky way ',	'moon picture'),
-(2,	'sun',	'solar system',	'milky way',	NULL),
-(3,	'q1',	'hcm',	'vn',	'ayooooo'),
-(4,	'Apt 1187',	'Qaşr al Farāfirah',	'Egypt',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAANZSURBVDjLVZN7TFNnGIdPTMwSY/aHyTJjYkJmIjNT/zCLMS4uoomKRhMTTcjwMoJCWDTGeUFAtmIkoKIoA4QqoJRLrKyzLQ63qS2ltDtcpOXYQi1SbMFSodALp1fbn+9pgGwneU6+vN/7e75LzmEAMHNPmSWEiDASPcRnQv2/UO3L+XmWSF6oM7MyZilxfa43fTwyrYK394iLVezXnn8eURPuedT/Kg5qfAM50wHzZTf1s8TqhMDVyhR42aMT4cmnmNJnzPZJt/pLtdOo7HWhzuBMIIxvaUZhkG7iPVwR7zec+0C5fmIp43jAFPqMl92TXRmzuqat0Qq9HY+M79GiGUO1zISKxyY8eDGKloFx1HeqMKTYHQs4Hn+cfLLOQtlk5m0ts21YvMzSfX8jf101ilbWDpnKhhGHF9NeP6a8c7DYvZD8PYL6LhseyctgbNkSMos/f0XZ5MRFnK9T3sj9nYNYa4OUVhOeGY8HbyacCNJYwB8H/lA2Y7g5DVZ5MQx1u2Cs+uZYQpBe26++0MahpsMCM63MR+Pw8zyq6hvgIpEvFIL6WQmcL3PhGWwn2wRmB9ugL9szmRAcuq1xn215hWvNRrgCEcyEYgjTRJ6oCE0yOe7dyYDbJELYoYBTfQMBToaPY1pwDVnBhOBASYc76z4LUcMA7P4ISWJweHy4WnYT1eXZmHldiFhAi8DbU3D3nMaQJBOsODPeU3FwbUKw55c2dVq5CkWSfnRaPXhPh3b4Iuj8pxozXB5iQT34keMI2tPhM+eDq9mH7CuVfYnvQHilXHgo2it6gjP3dCiVWjBFF2YdlMPZmzsfPobgux/gfV0Ac1Uqhe9CyCwKvjtd/S1h2lWoxNlaDWrqxDD/dZG2rUHQlomQ/Sg8tJOhqt1I+7UJQq+QWRQIbD5Zlp1TKuGzfr4I05/5MHbcxjh7GLwtHW7DJQz8tg8/lUhwovghL/Qu/gsLA51Ol8JxHKTXdgK+MQyLD+Fl/ip016RCKdqOjLxydGm74906XZx6v/+foL29/QvCb7VacTVrA8L6SoTZO2CLU9CcmRTf/2NO3/q0ApFCqfRZLBZQb5RYsyhobGxcTgwT4cPbVoRKjn8dfVGaGn1+c0enMnfDVwur0XwS4SEmiJVC7RNi1+PWy99nOwAAAABJRU5ErkJggg=='),
-(5,	'4th Floor',	'Pasatan',	'Indonesia',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAALnSURBVDjLfZNLaFx1HIW/e2fuzJ00w0ymkpQpiUKfMT7SblzU4kayELEptRChUEFEqKALUaRUV2YhlCLYjYq4FBeuiqZgC6FIQzBpEGpDkzHNs5PMTJtmHnfu6//7uSh2IYNnffg23zmWqtIpd395YwiRL1Q0qyIfD56cmOvUs/4LWJg40auiH6jI+7v3ncybdo2Hy9ebKvqNGrn03Nj1+x0Bi1dHHVV9W0U+ye4d2d83+Ca2GJrlGZx0gkppkkfrsysqclFFvh8++3v7CWDh6ugIohfSPcPH+w6fwu05ABoSby9yb3Kc/mePYXc9TdCqslWapVGdn1Zjxo++O33Fujtx4gdEzj61f8xyC8/jN2rsVOcxYZOoVSZtBewZOAT+NonuAWw3S728wFZpFm975cekGjlz8NXLVtSo0SxPImGdtFfFq5epr21wdOxrnMwuaC2jrRJWfYHdxRfIFeDWr0unkyrSUqxcyk2TLQzQrt6hqydPvidDBg/8VTAp8DegvYa3OU1z+SbuM6dQI62kioAAVgondwAnncWvzCDNCk4CLO9vsJVw8xqN+iPiTB5SaTSKURGSaoTHHgxoAMlduL1HiFMZXP8BsvkbO1GD2O3GpLOIF0KsSBijxmCrMY+FqgGJQDzQgGT3XrJ7DuI5EKZd4iDG+CHG84m8AIki1Ai2imRsx4FEBtQHCUB8MG1wi8QKGhjEC4mbAVHTx8kNYSuoiGurkRtLN76ivb0K6SIkusCEoBEgaCQYPyT2QhKpAXKHTiMmQ2lmChWZTrw32v9TsLOyVlu8Nhi2G4Vs32HsTC9IA2KPRuU2Erp097+O5RRYvz3H1r3JldivfY7IR0+mfOu7l3pV5EM1cq744mi+OPwaRD71tSk0Vsp3/uLB6s2minyrIpeOf7a00fFMf1w+MqRGzqvIW/teecdqV5a5P/8ncXv9ZxUdf/lCae5/3/hvpi4OjajIp4ikVOTLY+cXr3Tq/QPcssKNXib9yAAAAABJRU5ErkJggg=='),
-(6,	'13th Floor',	'Jacareí',	'Brazil',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGtSURBVDjLpZO/a5NhFIWfL1bNoFQdREMRRAo62CqIhOImWRz8A9xcNU4uFd1asEs3cXDxX+ggFkTQoZRsUrGDCDpoY4VSEoPRku+e4/B9+UUyFHqnM9zzcM77chPbHGQKHHAmumL51c9eFNkYiAAMlpAhlOkQLNw5lwwBAEonj2CMBQYsI4MHIBJ8/dUeTRA2dm4Q2MbO0+QgyUgmOmMqRGQRsZFyY1drGNIJjQIcyhYNkrDIDeoZu8A0HQNIBQqjfClb7mr1kxiUehSgVITc6+mBzs4rdZOk4wBpChHq9R+GQLP1luaf9/zda9Bq73HrUf3J66cbi31ABBET+avnRmdfudNYpThZo3LtOlOnpnm3uULt09ZCuVo6UegnMBFGKUQ4+5UQaZitnRWuXJwlCsHs2QqRdChfngO43weECZlUzrWIyJLstrY5nBzj9qUHADy8+YILp2cAigNvID5/b/c6S8JhBOz+brBZX2ejvsZ85SVLb+5SPHQU4F+yn2ssV0uLU+cnH8/N3GD6zFW+bH9g/eMaP741l5P9nnO5WloC7gHHgRbwvPasPv8fJZl0Xd9fi4EAAAAASUVORK5CYII='),
-(7,	'Suite 43',	'Plumbon',	'Indonesia',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJcSURBVDjLfVPPaxNBFP5mtzVL0nhIA4mUmBaqB/WSUy459FBs6amIIv0DJBcR9GIOWqSI9JSjesjFi1eDoNBEsdEaEFsRD0EPLYKxNMREyY/NbvbH+GbdTdOWOvB4M7Pvfe9735tlnHOIZd24znHuAsxiEdw0wS0LtmHAdv3o/Dz4q3UEXq8xDK0RbzOcxIcSbXHv+b6Bw2sfwDAdEFvXnWAHSHh3P3IMgDQAoI+ckhGPwxIgZMJbmgY2PQ1b7VFM/z8M+saKpmnLzctX0AmOQZNlGIJ6uw3lVwORN28RpJhjAbbv3qlyVe2EJibGFDrbtg1PYALGJ1nuqLMz1aVDAEwEVSqVpGma+UgkEm1TxV6v5wAIkyQJPp/PsVKptKfr+mI6nf5wQAOimgmHw9FWqwVVVWHRBIQJANFGp9Nx7hOJRJTYZI6ISEEpwURUNoXqbnVhHli320UgEAAxSB1poVwuW7FYTKrX604ShjQYnD/mwbfy0Ks7sGT+g64eXiyYq46IfRqPFzzsB/ut5zhZfY+zV9PwTZ1H70shVnlXvF+cHe06LRCt5uBJu7179IXvbTzFmZlLULbXwZ4swb/zDJPxcZkzfnPEBdig/heF0s7sDzGRGjUo0Slg4db+/O+dgmyzScmd8+rm5uaeoijw+/0HNGCMgYfCUD+/AChJv83wm6xVqwstdplHPZfLXSMmK8lkMhoMBv+9TpdF4+VjnPi2htPj9E9IVbTrJr7XZMvQ+PIAQKxsNpskkAyJmiILCXGppSbZxtyf0q5S/7ogWyxOlX9S1qO5gvngL9401yPDHgg9AAAAAElFTkSuQmCC'),
-(8,	'Apt 407',	'Jinan',	'China',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKYSURBVDjLnZPJT1NRFMb5G1wDHV5boNiqdHrvFYolCAtsGSSWKpMFKhYqlDI6oAEKaVJwCIgSphaKtLYWCgSNBgRjMNHoxsSFS3cmJmA0NMTw+R6JKKZl4eJL7sm953fOd3JPHIC4WMpcppG5SGnZc8ZjVVF6QLn975sDgfaZmvg71oRJZIRUYcuAnq/2KWroGfm3QwEn2YpLVPPvOD2oiqj9yq/mGznegl56mx6T7ZbY1M6YAM0CuZkxT0b2Wg6QW/SsApRXDsotR+d6E9Y/h9DuqoCuJq0lKoDxqU1/pITGR27mBU4h+GEcTz5OY+ClA5JbyahYzof/9TBO9B/FcWcqpA4xU3We3GJ87ntnfO5meinMvruNnqcmXA2XoDVcCc0wCYkzBaZpA7ILRJ/2O2B87jA+QT9UeDRe8svZYAG8b/txc6kc9mA+yqayYPQXwvdmBEOrA5B2p0BtFIYOWKCm5RukWwZyXIbA+0F0LpaiKaBHmVsLw4we99ccsM8a8GClF5JOMcQdou8prULrgRmQo7KI0VcE13MrGv06lE5kodhzGvdWu2GdKkTVWC4DcELcJkKyXbCb1EhAVM//M0DVUNqP2qAJd1baUDaZjTMTeXAttsPi0cM0mgvHvA0NkxYk2QRIrieOsDmEmXttH0DfVfSluSToWmpD8bgOroUOWNw6VI7koGfOBuq6EqLLTNU6ojrmP5D1HVsjmrkYezGIrlA9LjKgnrlGXJlpgbCOD0EtD0QNN8I3cZqjAlhJr4rXpB1iNLhrYffUQWoT7yUKzbxqJlHLq0jc5JYmgHMunogKYJVqF7mTrPyfgktMRTMX/CrOq1gLF3fYNrLiX+Bs8MoTwT2fQPwXgBXHGL+TaIjfinb3C7cscRMIcYL6AAAAAElFTkSuQmCC'),
-(9,	'PO Box 93909',	'Dongzhang',	'China',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAALwSURBVDjLhZJJTBNhFIDfTKcdumGtBYqtbSgQkE0DaggqiyhBPchBjWLiEuPBaAyHetEEE6NouOjFE5407gESExKNVlyCCYsLRkNYQrqwWVRKO22n//zz/w4kEgKi3+29/39fXt57DKUU/pDTMmqoNKlbrWbNZqtOtQphimficiwQTIx4voQOeJs3eGEJ7OJg8JRL8ATiN0DPTW906tnNGQbNW2/sxcu+maOygH3wF7jFQWbzIGPkmd1ZRs56vn38bnGGfoMYQiIRcDBwexP9r4DE8fHLdc7TF+75boV/Jh5VZBnuGnnWTJP43LwrwyeSdVy2jCkCTJXWiSYSwuMLgoyLX7P3V6S4p8JSeHZKfEATcmytljNpOdYAhCShKI2n2NTFzjVqA5EA3nWH2n9Noc8LArOOdVc4dDnTYSy46x1PkxhGnWvlzd2DrEHyhYYtW3R2Dqh+YCQ66kznXT8m4t8oJjc5Z8NnjiD58PWTrvqWzuCb3s7vt5UHRGViazyXc4lngFelGvcUZunrfH7x69BAxJ1q0jzjKOgCD4sRqwwob1912vlfAo73vJxyTzwuezDZtq2VSPj5hxFhjKOMsbDEfM1AjpLc9P0FFMl6BhPQ8kz6/BrPHrR356fwhbNRrNtbk3Z1LplS6ykpr7bd2ZlnKoqI4LStVptEJIh2y3qoqjrSShSBhoXkub/M4kNaTMP9ckqIJCNCVAhjsJkzoci+DXq8r6B/rBfGP3V0TP6IHuNgBZQxwK78YyqZEpCJDAQoTMwGoNC+FQQUh9D6sj3wuiN1RYGIEcwV+34Og0SwIpRAkiUIJyKwcd12EKQYEyqt7l8mSDv0sYQSWllTIwKWMaQlO5RieV42OesHs8EKHwNd0D3sx8G+tjPLZlDbPBrWqMHIaXeBiCRAJKF0kyCZlny21FUDff730DXkAxd5AgRzaMUhLqXgCju9ybHD8nrI8wERKJtoUk76X1tYiquRmZaJyhInsjrYRPGf/G9oAXqKbs089gAAAABJRU5ErkJggg=='),
-(10,	'PO Box 54935',	'Tianchi',	'China',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHfSURBVDjLpZO9a5NhFMV/bxowYvNRjf1IoCDo0KFJBVHEVbeCi5N/gM6KruLi6KiDKA6KIC6CQwdtBxfRrUGHFlTQIlikjTFpkua55zo8r7aDipALd3keOOdwzrmJuzPMZF/cOPFXBMmRHJMTTJiJYCIEESy+ZQGqczPIDNxxd/AMDriBu+MSCkJmSA4CJ8Pym+UIIAs0177S3Wz9F3O+WGCiMrmjwM3pbrZ4fvo17kR237XAtcolRvdOA+L+9TscHB/HTGQAlLqwuHWbxa1b9JMVTBDSHRi82qijbgPXNsGEpx5kouYo+2jpI/3kCUudiwzUJBgMAoQAjf4ZFtZP0mq/x0xIYPJUQQoQLHAsX8fMeNk7y4DVCGKw0q7ytHmByx/u/lYgOVnJUbBomAa8azWYr5b50unRGZln48ccYzrH5/VTtHuTKIxQk8dUdgMEE/XyN2YPTFHJHaZWFPIan/KriEccqT5ExJi15FiwWCSTo+CYiYk9h5CL4NvIhSOmctOxCwgh3J3vauAWnc8GEzInt2+U3s1nuEWwmPlOByzthuSUSyV+XUDWTOAJxbEyhcJ+pPgxc/4KnbUFQOTKx3n74B5uQhI4JEkMMHl8ddZ3d/tfzH+aZNhrzDDk/ARfG6G/LNZPQgAAAABJRU5ErkJggg=='),
-(11,	'18th Floor',	'Havtsal',	'Mongolia',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKbSURBVDjLpZNLbIxRGIaf/9Lfpa1rZ0hNtYpEVRBiNkUiEZFoKjSxQmLBglizIQiJILEgWHQlgkpLGg1BU6E3imorLkElLmOmM1XV6mXm/8/5LH5GI7EQJ/lyztm85/ne872GiPA/ywa40NC3X4TtSnRIa43S4GmNUhqlBU/pUaVQnqC0fnRk89ywDaBFdpeHs3P+5eUDlW8XpgmU1jkAmdU7QQSUB1qB6/rnVBLcFCRdcF0G99bjumrMKIFfPgjkBkB7fon3UyQJbhK8FLyIAuB66rcHSumfAgZ8ToBon0Rrn0T5+6AzyKd5eVi3j7HDuUfnmchWRITTN6PyfdiViw3dIiJS2RgTEZErzf69qiUmg59rJFq/R/o6a0UGIvK1s0paTqyN2QCu0mgRbAuqW+JYlsnVB3FsC2pa4yQSuxjKLmbK3BJ6u17iGCmyJ0wna+rMiekWBLAtgw3hADWtCdaHg9Q+jrO64BVDmUVMKlxDMnoZZ7zB+/ZX9A+ZGMmeRWkC0WCbUPskQWvPcR7eEEI6xvDYPCbNKWMkcg7T8cjIysfxPnC+dwun95a/Nn1HNSJChgWlSwMAFNtDbJw+g4lzyhiJnMXMcEn1F9B9vwNZto/vTggAE/ypA7BMg7qOHnL6PrBYxhEsXkcqVoHlCMn+fLob2mDVSQIFC9M/ZwN4nud7YMKMgTpyJ8/GkyDRZ6eYHHQY6c2jp/Ul5qqTBHLz0VqwTH4TuMpvYcHMLDoaK5i/fAdjPjbyuqaJ9lu9PL/zFKPkEMFQoU9qGWgtetQgSdPBS28Wp5TOzO1KkHpey6xFK/iW+EJX2xvuhg7z5do34GE6C30DI9cBjD/jvGnllOElhdPscNEsJCPZPBxPbCs92vnub6H6AWmNdrgLt0FkAAAAAElFTkSuQmCC'),
-(12,	'Apt 606',	'Cluses',	'France',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKtSURBVDjLpZPrT5JRHMfdetn/4evet3QrhGayZathrbwNppMU8ckFONEhoiGFeMNL4o3yBoi37lQQ89rYypaLIitTQVSUWKC9+Haeg5P5svXi+5zf7/t8f59zzrM9SQCS/kf0MeAKKfudodWe19vofhlE54sg2p4F0Px4A43T69BN/ET92A+oLd9QPexD5YMvUAx4F44Afc6dYCT6B/+iW73LsSOA6dUWNWEWAQNCoDcXMN0AOrKAtstAIx9o4AHqs0DVGZqVdH3AEaDLETwEkGGHHHheDjyVAk+KgclCwJ4HjF4DBgms8jTNFhnfJQDt5L7HTtCfD/SRoZ4coPs60EmG2wVAKwG0XKJZYbMnAWghH4s1H74JsCaG3X66jszEe8tsvLfPxdfgXhQ5+sUEQD+1hvDvAzpgYTW7CetsALb5AOxEUvtNlIwVodhaiOm3fnzdCOOqdi4B0I2vYo8AbPOb8Z0O18nF+AmYcQla39+DZExM+89re7iimUkA6mzfsRs5wMTiJmwzq2CaS6GuV8NkMqFGcweMWQJmVIKKGgX1tFodsuVdSElJOUkBqpEVhH7tY2phnQYMBgP8fj98Ph+cTifqG/QwtnfC6/VSz+1200xGRoaWApRDPgpo7JnAbZkCnqUl5DO5JHABIpEITU1NkMvltObz+VDXaiiEYZhdClCYP2GHAMoq6qDRaCggFoshjcuDw+GAx+OBy+WC1WoFj3cega0wBahUqigFlPctYzscw/1eMySSUgqQVSjB4XDA5XKRmZlJxdYcThqUVdUUUFBQEKKAMtNHd0nHUiRb/QgXs/KgvWuAecgCm80Go9EIqVQKmUxGa9YzD1qg1ekPyHWWj/2aycnJJ1JTU0+lp6evCIXCiFgsjhLtCwSCbKJzpA6zHvuOzbDZv+ti+O9p0FSiAAAAAElFTkSuQmCC'),
-(13,	'Suite 78',	'Juyuan',	'China',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAF6SURBVDjLxZM7S0NBEIW/fWCnQgyIT0QQDKJBFBRbsRCt/Ae3VRs7wVpIY6WxkqTXxgek8IGIIQRsYjR2SkhAMJoipDAkXNfi6k18YcDCA8vMLDtnds7uCGMMf4Hkj/h/Ag0QDocngVVgrM68O2DJsqx9/bax7vf7fK2tXgCEABBvftU6vuDxMd97cXEZBFwCr8fTTCbzQKViO71J6SYJIdxYa01HRwuA123BgUAphW0b93AtSZVAIaX6qMF7RaU0WvMh4bNVSiKE/EoghEQpiTH62+qJTIzLbIzic4FypYxXdmuwEKFQyPT0dDE0NOCKVxXMiU8SB6Seooz4Run09HGa2iV+fU5Tsd+5QTqdJZ3O/vhmZ7lt5mamsaWNv22K45sdxgcn2NmLgDHm1zW7Mmwi11umFvvJoBlbaDN1/cR8IVdK3ccIHFkABA4tbnNJgFJdBC/mZS2ejNGA5uBqkwahiSbOAIKi3nEeX2wPAPNAI1AENuMb98uviwGZtIAuD3IAAAAASUVORK5CYII='),
-(14,	'PO Box 85867',	'Pasar Kidul',	'Indonesia',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAALvSURBVDjLTdJNaFxVGMbx/znnzkwm05lJ0xlm7FeIbW3UxDotVoOEFkTMotKFK+mmOxfdRMWFggutOxGquHOnBFw4CIq0WEEsihJNBEWKUmuTYMjXJPM9c8+957wubNM88G5/8Dy8SkQAuFhdPg1ceXBoYLIbebqRJ/KeXuwbQAvYBBywDdSAT4CvA+7Gx/GTJ8p7Jl89U2R3Otbnu9bnt/vuoI2gFTrubLa5+nfnWWBmN1DKJRUAy3VHQikCBSaAVEJzOKUxWpMwUDmYZn8+M/zR3Mp7+h7goiiXCSD20LKKRgT1EBr9/6/Wg/W2A+D12SUmRzOMFxLFYBcwnE1qOiF0+g6tFQFgDGgDBoVR4AHlmvx0e5uFpcbKfcDaUj5taPRiuqGgtWA0aKcwGgyCMYAY1poh71+/1QQu7lSIrR0p5RI0+kIMWAHrFNaBavxCZukdbNjCC7iEI7Z2tHrpiev3N7DhSDmfomMFpcEohQaM75GrVSmWJkhvfIkIxGGIs6ED0ADTl6+lcXEyldBYBxoBPIInvX2V4VKF3AMVzNo3dGp/0u5049ja5g4Qh7aYUqDvjoSAApLhCgOrX5EtDOGaX1B+9EXWfptFbH/92pvTsgM4Gw4GeAINRitQGgRSq1VKx89Df4G5j2fZM9Sjt/wjj6d+796rrqdmZguxtZdPjx1mtSncWXNstRyu9ivDqk52bxcf/gPice2fGT37Cs9kvy/PfTCZBTAHTp57Xpx7rWejxK0NxeJqndv/1ji28SFHTkxh/AISb7H/kQLiuyQHU6STx5P1xfn+oadf+i5wUXTy/NnH0m9ceGrn/zf++Jze1gSD2U1cuwbKMF+9yakXHsb3/6L40HMs3ogu3Xh7/DNTnpg+ujefOVdrRSytd1hv9mn/8BajZ15GBwaVOIQeGONAZQo9MIZKHiHIHCOZPZrZvPltSVUuXCkAM8AIsA/Y9+74p6eMRFq8KPGCeA/iwYN3sWhxVnnnRWT+P1A8aPl/RBTPAAAAAElFTkSuQmCC'),
-(15,	'PO Box 64275',	'Fenhe',	'China',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKESURBVDjLpZO7axRhFMV/38zsy+xuEt2Q50bYgChGUBAVxUbRRlS0sxJsbP0HFAQJ1jYqtlqYTlARNZoiPlELCxVd0LgxwcnuxmT2MfPN97BIxAcIggcu91EcLudwhLWW/4HDf8I7feXZw/Sq3JZqEHc0QuUYCwaLNhZjLdpajFneV8oidBy3FquVd+Wy19PdWTx5eF0+iq1Ip9zf2MWfs1ju7Ui57UgPHDsfhY6/pEpSGXHt4RyVqqQZWaZrhkrdMPPNMLdo8ANLtWmJNczUJBduzrHQjJxcT3HEaUZapBIOg/157r70+daI6c0LEi4kXUHSEyQ96MoIakuS8amvdK3Os6YrBSCcVqgAKPVlGerNc+eFz0IQU8g6JD1IutCZFtQDyfiUT2FNntJgFrFintMM9bKaLpQGsvR0r+L6ZIV6IOlMC3JpQS2QnL99gHcLhygNZMl4v9jYbC9/IASoWJH2DMODXdx67jNTDZmphtx46hNbxVBhAxcnRkl6P5X1WpHGAlIqvtYDir05kskElx8c4c19jTQKqRUD3SNs6NtOEDY5e2MtV0+UwQq8VqSsNlb4tYBiT45MOgEWlJHs23gcbQ3aaAyW2cUKm4Z20ZBtDl4s0Ofcs16z/uVTJNXa9UMZkc04QjgaBwiVRFvDdO0DsVEoExPrmKUoYHNxN424xfOPu/FkY35676k73alcR4eXcoXnuTiuoL8YekorevPDKKPR1jC3+JnV2T5eVR7xrFyOE2/PPRF/C9PRSyUdSok0klBJRgobnR2l/bz4/JiJ93dfS8W22TEbiX9N4+g5Z37r8J7C5PuJl9Kwc3bMSoB/JiidEfPauIW20Ql/zKof9+9pyFaERzUY+QAAAABJRU5ErkJggg=='),
-(16,	'Apt 572',	'Bagiktinggang',	'Indonesia',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH0SURBVDjLxdPPS9tgGAfwgH/ATmPD0w5jMFa3IXOMFImsOKnbmCUTacW1WZM2Mf1ho6OBrohkIdJfWm9aLKhM6GF4Lz3No/+AMC/PYQXBXL1+95oxh1jGhsgOX/LywvN5n/fN+3IAuKuEuzagVFoO27b1/Z+BcrnUx4otx7FPLWsJvYpIM2SS9H4PqNWqfK1W8VKplHlW/G1zs4G9vS9YXPx4CaDkXOFES4Om4gceUK2WsbZWR72+gtXVFezsbKHVamF7ewtm/sMFgBJZhd6pvm4kDndaAo2KOmt5Gfv7X9HpdNBut9FsNmFZFgPrMHKZc4DkjHyi6KC3MZNehTOuGAH5Xx5ybK/Y3f0Mx3Fg2zaKxSIMw2DjT0inNQ84nogcUUQJHIfZquNT3hzx46DBALizg2o01qEoCqLRKERRRDAYhKYlWRK/AJdCMwH2BY28+Qk8fg667wdXKJjY2FiHaeaRzWYQCk1AEASGzSCZjP/ewtik5r6eBD0dM+nRSMb1j4LuPDnkFhZymJ/PsmLdazmV0jxEkqKsK+niIQ69mKUBwdd9OAx3SADdHtC53FyK12dVXlVlPpF4zytK7OgMyucNyHLs8m+8+2zJHRwG3fId9LxIbNU+OR6zWU57AR5y84FKN+71//EqM2iapfv/HtPf5gcdtKR8VW88PgAAAABJRU5ErkJggg=='),
-(17,	'Room 532',	'Naryn',	'Kyrgyzstan',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAElSURBVCjPfZFNSwJBHMb9UPOd5pR9hUnvIQrFQl26FHXo0CmImEMoQUhl48vBw5qWtY461pKU9PTsrJRsFM9l2N/v/7IzOeT+z/ehI9qqpZvW2Ia+VdciI3Rk20SIsWBeMUTdXMkVgdjNAcwxg8MbTzEuXU0uBTY3CZ5gDMuMEHlFm3PhhZaKMviJAbo4UV5o6phtE7jO5FEkHnKTMY60F+7sAlPiiDDvhUc8UHrHvvVCg8KE+NnjNRQwYJIee6lwo2dcKZlbJCxgg7jP/wmxm46oqz4+WZE0Hnh4jx4+UEWQLlkTF2bKrX9gyIIeAhOI5UWdyVM34scX38exOkTgKnLlqo/loalzRMzZXWhUTElmHutA7KhtvWXLtqQ3VVn8es2/8gUo3nl2LXz6SAAAAABJRU5ErkJggg=='),
-(18,	'Suite 32',	'Vohibinany',	'Madagascar',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAEoSURBVDjLnZIxS8NAGIabf5JfURf/g2NxyCCEbAGXcuCWIQSC3C4hZHPXttopKI5S6KaC2E2umDRSg6SXwGcubeAuCeVs4F0e3nu43Pf1AKDXTPmpZfpc1K5e1e04rLBDRVEAS5ZlsE+yVxBFEdSinUT5lyBNU0iS5HBBnudAKT1cwEdawE9B1/XYMIxY6hHDMMS+7xOMMXEch9i2TYIgGLiuO7AsiyCEqpimSUoxFgTsap7nEf6Ku19RupimaYRj7aWRZbWguTRHZU4kWC3eCsKXGBbxpn7xMzbC9fMNFJ+vArtdjuAjW/CT2Qqe3tfw8JYI5d/5HfzMRgK7X01h/DVpCy4fv+FiuhLK9Poc6NWpwIZLBEOC2oLG0lRlCdbvmgLLsSRT/wAPFzLO5ovpLAAAAABJRU5ErkJggg=='),
-(19,	'Room 221',	'Ushirombo',	'Tanzania',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH6SURBVDjLY/j//z8DPlxYWFgAxA9ANDZ5BiIMeASlH5BswPz58+uampo2kuUCkGYgPg/EQvgsweZk5rlz5zYSoxnDAKBmprq6umONjY1vsmdeamvd9Pzc1N2vv/Zse/k0a/6jZWGT7hWGTLhrEdR7hwOrAfPmzWtob29/XlRc9qdjw8P76fMeTU2c9WBi5LQH7UB6ftS0B9MDe+7k+XfeCvRpu6Xr1XJTEMPP2TMvlkzZ8fhn9JSb+ujO9e+6ZebbcSvMu/Wmm2fzDSv3hmuGsHh+BAptkJ9Llj3e2LDu2SVcfvZqucHm0XhD163+mplLzVVtjHgGar7asO75bXSN+VMia/KmRHxK6/P/H9ni8MmjwqrNoeKKKkZKa1z37F7H5uefkTVn9Ac2NK5O/L/lytT/F57t+t+/O+t/eL/uf/NsqV4MJxYtfXxmwo4X/4F+NYaJxba7fN94ecL/jdcm/QeBnj2p//v3pAMNkPyOYUD8zAcbJ+189d+z5UYOTMyn2vD/titz/iODTZemggzADCTvlpuNE3e8/B/Ye2sJTMwyR/p7966k/+27EsCa23cm4HYBMGq82zc9/5+3+NEzx4orbCAxoMKW4B6N/727UsA2g2gQHyjeg2EAMGqEKlc9/VOx6vF/29JLgTBxoOIOIP4EcjaU7gCJAwAM9qYI32g+agAAAABJRU5ErkJggg=='),
-(20,	'Suite 64',	'Stebnyk',	'Ukraine',	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH5SURBVDjLpZK/a5NhEMe/748kRqypmqQQgz/oUPUPECpCoEVwyNStIA6COFR33boIjg6mg4uL0k0EO1RFISKImkHQxlbQRAsx0dgKJm/e53nunnOwViR5leJnuZs+973jHBHB/+D/ah7X2LXWloilyMw5YgtD3CDiBWN4Zno8bQcJHBFBucauZfsolZDCru0OfFcAAUISrLZDfPzSKxuiibOT+T6JCwDMtrQzYQvZHQ5Cw2h3GK0OI9AWBzJJZFOxgtJUGpTABQAiLu5OOviuGIEWkBUwC7pasNZj7N2ThNJUjBQY4pznAoEWsBWwxU+JFXSVRTzmQWvKRR5RG4KVGMgKrAVYflexAAugDCEygdbUCI2F7zobk7FZY76DIDQgrT9HCwwt1FsBhhIu4p4D3kiS8B0MJz28ftfGSPfl8MPLxbGBAqVpptbslJc+fEPMA7JDPrIpH3FX8LzaROdrE5O51jalgid3Lh4b6/sDALh6971riErGcFET58gwDPGndG9JT6ReHcwfPorGygu8rdxvGxMeP3XtzcofgigWZ0/EtQ7n0/sOTe0/Mo7V5WeoVu61z1yvZzZX+BsnZx9opYLpevXp7eXKIrL5UWit0n0r/Isb50bjRGreiyWmgs76lfM31y5tSQAAc6czHjONXLi13thygih+AEq4N6GqMsuhAAAAAElFTkSuQmCC');
-
-DROP TABLE IF EXISTS `room`;
-CREATE TABLE `room` (
-  `room_id` int NOT NULL AUTO_INCREMENT,
-  `location_id` int DEFAULT NULL,
-  `room_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `guests` int DEFAULT NULL,
-  `bedrooms` int DEFAULT NULL,
-  `beds` int DEFAULT NULL,
-  `bathrooms` int DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` int NOT NULL,
-  `washer` tinyint DEFAULT NULL,
-  `iron` tinyint DEFAULT NULL,
-  `television` tinyint DEFAULT NULL,
-  `air_con` tinyint DEFAULT NULL,
-  `wifi` tinyint DEFAULT NULL,
-  `kitchen` tinyint DEFAULT NULL,
-  `parking_lot` tinyint DEFAULT NULL,
-  `pool` tinyint DEFAULT NULL,
-  `image` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`room_id`),
-  KEY `location_id` (`location_id`),
-  CONSTRAINT `room_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `room` (`room_id`, `location_id`, `room_name`, `guests`, `bedrooms`, `beds`, `bathrooms`, `description`, `price`, `washer`, `iron`, `television`, `air_con`, `wifi`, `kitchen`, `parking_lot`, `pool`, `image`) VALUES
-(1,	1,	'deluxe earth view doublebed ',	2,	1,	1,	1,	'earth view ',	9999999,	0,	0,	1,	1,	1,	0,	1,	0,	'aaaayooooo'),
-(2,	2,	'full solar system view king size bed',	4,	2,	2,	2,	'man not hot',	10,	1,	1,	1,	0,	1,	1,	1,	0,	'pictureeeee'),
-(3,	4,	'Snaptags',	3,	3,	3,	3,	'Industrial',	95,	3,	3,	3,	3,	3,	3,	3,	3,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAENSURBVDjLpZM/SwNREMTnxBRpFYmctaKCfwrBSCrRLuL3iEW6+EEUG8XvIVjYWNgJdhFjIXamv3s7u/ssrtO7hFy2fcOPmd03SYwR88xi1cPgpRdjjDB1mBquju+TMt1CFcDd0V7q4GilAwpnd2A0qCvcHRSdHUBqAYgOyaUGIBQAc4fkNSJIIGgGj4ZQx4EEAY3waPUiSC5FhLoOQkbQCJvioPQfnN2ctpuNJugKNUWYsMR/gO71yYPk8tRaboGmoCvS1RQ7/c1sq7f+OBUQcjkPGb9+xmOoF6ckCQb9pmj3rz6pKtPB5e5rmq7tmxk+hqO34e1or0yXTGrj9sXGs1Ib73efh1WaZN46/wI8JLfHaN24FwAAAABJRU5ErkJggg=='),
-(4,	5,	'Youfeed',	4,	4,	4,	4,	'Electronics',	91,	4,	4,	4,	4,	4,	4,	4,	4,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIHSURBVDjLpZPPS9RRFMU/3/GbmhVBWVJGLSQoi5AIM+o/CCowBKVFP3AZ0SKUFlELiaBNhNugEKTIIRFc1iJFs2iRm8QoSiIdQ2Z0Zr4z8969t4U644ALwwuP++57j3PuO5wbmBmbibDvffKeGZ1iekBVEQWviogianjRNUsQb4jqx54rh5sBQjW72dq8o/Z/WO+//Hai2IGo1gIMfn+OV48Xj1OPE1fK4ot33Wd6cE6q1gAsa9DReGND7Jmcx3kpaSCiAPSPJDYEcOHULgprAfwKAED7ub28Gp2j7Wxd8WxgfI7WllL9dzFX3oETRc0IK2BgLEFFRYz4eIIgBrGVR4MTCTBjSwhH62souBIAjwdnLJUtWPxDwszM3qzk1Xg9NltWT/9OWeHaVTMzzIzgYfyndU08BUCjPJrOIKk0klpEkotIKo2mM4zER1GgcX81h253otmImuGhIHR+WQNruwQixHJ5gmxEmM5gmSwWRaS6H3HxdB359g40G5HcXY1UVuFOtljoVZeZe5+ty6xRHoDhz/Nw5wkNeyrZd/k8ms2xc/JTwN2+KVtYytvbL/NmZvZucr7szwNj5Zp8/ZW0hSNNRQ1CJ4qZcfzgdv4sRDTUbeXHbLo4C8fqK5maSZV54db1Xn1RMpKNPuifbiqIbnNecF4QrzhRvPh1zZRcyg2t7oPNjvM/JWOW3I/zgm0AAAAASUVORK5CYII='),
-(5,	6,	'Jaxnation',	5,	5,	5,	5,	'Electronics',	50,	5,	5,	5,	5,	5,	5,	5,	5,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIhSURBVDjLY/j//z8DJZhhGBlgZ2fHnZWVVdra2vpu3rx5/2tqah7m5OSYA7EEkH0XJAaSA6kBqUUxwMjIiM3Hx6dr4sSJ/1+8ePH/7t27/w8ePPi/sbHxXnV19aGbN2/+AIkdOXLkP0gNSC1ID9wAQ0NDv+Li4g9Xr159FxERsc3b2/tPamrq/0mTJv2vrKz8D2KDxEByK1aseAhSC9KD7IKupqam75MnT0739/fnsre3/7x3797/586d+3/o0KH/a9eu/Z8xx+Jf6nzD/yA1ILUgPXADdHV1M9PT099PmzatJCgoaKejo+MvNze3/4GBgWAMYifMMPrfuDnqf/gMjf8gtSA9cAM0gcDX1/d6b2/v+1WrVr1dt27d//yltv9zF1n8T19g8j9pruH/mvWh/1ednvi/ZLX/f9c+iX+a2hpacAPU1NSYgc428PLyup+SkvIlOzv7e/Zi8/8bzk37v/bsFLDGFacn/J+wp+T/wuNd/zOWuv03bWf/rdvMyIgzfpOB/gVp7tuV/79zR/b/1m1p/xs2J/5v2pr+f8ah5v8xC2z+q9Yz/MRpQPRszf8rT034v/RE7/+Fx7r+zzvaATQk6//0Q03/05Z6/FesZbguXcnAidOAwOmKfz0nSv917hf9a93N/zduvtX/aQcb/ictdvsvX8twUbKSgZ2kpKzdzPg6fqHzf/lqhjNAzWwk5wWgk1/LVTP/F61kYEEWBwAP7or0z//OfQAAAABJRU5ErkJggg=='),
-(6,	7,	'Chatterbridge',	6,	6,	6,	6,	'Tools',	97,	6,	6,	6,	6,	6,	6,	6,	6,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHMSURBVDjLlZLBSyJhGMa/UxTUIWJ0ZVmlwxLLEiEhurCoKeqCOtZN7J4ZRZdd9rSG6NFbSOegDp5aqWWI3UGm6KBUxsq2LLj+CzV9jDOH8NlvJtqLjuXhBy/z8Xvel4chAMhTKGfOMeVsbqXf2wBp3s5Yf5hno8rp24YxS9PTVHq18mTAgzj3k4mCIs0cqZeLUCTHJ1q13VKRSz0v4PRNVr1KQfu9Aa31BZ2LKKg42aHfJ8ZNA9i5L9hWUZFeQ73kof3N42SPR6OyjFZ1FZ36AuQfo5CPyc7gDiRHttNYwsl+Apqmodvt4uJrCur1GmSB/GI4TAOo9JKjVasQi8VQr9ehqiqazSaqu1Fofz5C/kYow9M3gJVkp+JUJZFIIJ1Oo1gsolwu42hngcmfdfmecS4fki3TC3ieN2SPx4NAIIB4PA7lPIo70YY7YQJyhdhNS3yU3W43/H4/LBaLvnWbbbxnvGNyQz4gmb4ByWQShULBkH0+HziOg/6die+ZKOjzzQEZYXzoCYhEIsjn8z3yI0wKmf7KwWAQuVwOLpcLXq+3Rx4EyWQyaLfbcDqdCIVCQ8n/A2q1GkqlklHYMLIREA6HN/WzrVbr0LLOP1AMs7UPAa92AAAAAElFTkSuQmCC'),
-(7,	8,	'Photospace',	7,	7,	7,	7,	'Grocery',	2,	7,	7,	7,	7,	7,	7,	7,	7,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAABbSURBVCjPzdAxDoAgEERRzsFp95JbGI2ASA2SCOX3Ahtr8tuXTDIO959bCxRfpOitWS5vA+lMJg9JbKCTTmMQ1QS3ThqVQbBBlsbgpXLYE8lHCXrqLptf9km7Dzv+FwGTaznIAAAAAElFTkSuQmCC'),
-(8,	9,	'Eazzy',	8,	8,	8,	8,	'Grocery',	88,	8,	8,	8,	8,	8,	8,	8,	8,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHlSURBVBgZpcE7a1RRFIbh95yZXEaSSLwWFkFEkICKhWhhIV7AxlKsbSz9DQpa+gfsbERQsUhnEYOFFiJoYSrBO6IBY5I5c2bvtfb6jCIIYjfPU0liFDUjqhlR99r9FfEfHoFZkNwxg9ZFm5xkTptFY0HbOl02Hdvf4y/hIUoRHsKLMBcWgZkwD6wE2YNbi1/p8sf6wCkBHsJLkIswD8xF9iB5IZtIHmQLtk11aftOl03nDk/x6NUGpw9OsTYo3H26yoXjs/TGK8Qmwav3A5aW17h0cjfJg9tL34jWqJM7gxTMTnWIgImxmjYXeuMVNxe+UAFX731kbuc483t67Nk+zt5dk7QWROPUTXKevWk4um8LD5+vMjlWcfnMTrqdin4qCGhSIQJOHJjhl41hIVlBTaHut+LU/DSPX69z9tAMgxTcePCZZKIZFiRohoWQePmuz4eVhARDE5Ey9VqbsSKeLK/TqSsk6CdHEk0qIGhyIQQ3Fz7xY+Bs7XW4fnEOJVGdvr6s80dm+fQ9kS1IHiQT2YPkQfbAPDAXVgIrwkPM7Zhg8c5buusbTpsL05Md8ljFpFXYhHCvMK+xEFZEKYEHlAgkkPit2nflhYatIxORAmVHFigVyIFKIAvkggj+VUliFDUj+gngimmFTeOsxAAAAABJRU5ErkJggg=='),
-(9,	10,	'Quaxo',	9,	9,	9,	9,	'Health',	19,	9,	9,	9,	9,	9,	9,	9,	9,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIwSURBVDjLhZHLaxNRGMUjaRDBjQtBxAdZFEQE/wEFUaurLm1FfEGzENwpturG6qIFrYUKXbUudOODNqIiTWqvFEwXKo1UUVRqS2NM0kmaZPKYPKbJ8XzTiUQxceDH3HvnO+e73xnH8X7fLjJInjbgEekiOwA4/sbBD0Ov5sIqY5SVXiO/Rpospw01HphXrOttZPBMxCkWJ3NltZItq3i2pOKZklrWi9Z5SMuKwf2GBtJVxJotiqWLKpIqqHCyYO3/Z/A8UyirBDtLcZTi6Y+RdxdHAsnTAy/NM0TerCuRlE2Y9El+YjCWoLBkViyxdL40OpNmLuBo0Gvk12AuYC5gLqB2XAw8A2NBFZzXVHm1YnHq1qQpYs4PjgbmAuYC5gLe0jrnWGLwzZqDi33ksSTunw3JvKZ0FbFmi5gLeDswF2v/h4Ftcm8yaIl9JMtcwFys4midOJQwEOX6ZyInBos18QYJk0yQVhJjLiiald/iTw+GMHN2N6YOuTB9YieCozfE4EvNYDO5Ttz2vn/Q+x5zC3EwEyw9GcaH7v0ovLiN6mcf8g8v4O35vRg+edTr+Ne/tU2OEV03SvB3uGFQjDvtQM8moM+N+M0D8B92LjQ0sE2+MhdMHXShOutF/ZO6toXnLdVm4o1yA1KYOLI+lrvbBVBU7HYgSZbOOeFvc4abGWwjXrLndefW3jeeVjPS44Z2xYXvnnVQ7S2rvjbn1aYj1BPo3H6ZHRfl2nz/ELGc/wJRo/MQHUFwBgAAAABJRU5ErkJggg=='),
-(10,	11,	'Wikizz',	10,	10,	10,	10,	'Automotive',	3,	10,	10,	10,	10,	10,	10,	10,	10,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHhSURBVDjLpZI9SJVxFMZ/r2YFflw/kcQsiJt5b1ije0tDtbQ3GtFQYwVNFbQ1ujRFa1MUJKQ4VhYqd7K4gopK3UIly+57nnMaXjHjqotnOfDnnOd/nt85SURwkDi02+ODqbsldxUlD0mvHw09ubSXQF1t8512nGJ/Uz/5lnxi0tB+E9QI3D//+EfVqhtppGxUNzCzmf0Ekojg4fS9cBeSoyzHQNuZxNyYXp5ZM5Mk1ZkZT688b6thIBenG/N4OB5B4InciYBCVyGnEBHO+/LH3SFKQuF4OEs/51ndXMXC8Ajqknrcg1O5PGa2h4CJUqVES0OO7sYevv2qoFBmJ/4gF4boaOrg6rPLYWaYiVfDo0my8w5uj12PQleB0vcp5I6HsHAUoqUhR29zH+5B4IxNTvDmxljy3x2YCYUwZVlbzXJh9UKeQY6t2m0Lt94Oh5loPdqK3EkjzZi4MM/Y9Db3MTv/mYWVxaqkw9IOATNR7B5ABHPrZQrtg9sb8XDKa1+QOwsri4zeHD9SAzE1wxBTXz9xtvMc5ZU5lirLSKIz18nJnhOZjb22YKkhd4odg5icpcoyL669TAAujlyIvmPHSWXY1ti1AmZ8mJ3ElP1ips1/YM3H300g+W+51nc95YPEX8fEbdA2ReVYAAAAAElFTkSuQmCC'),
-(11,	12,	'Trudeo',	11,	11,	11,	11,	'Clothing',	86,	11,	11,	11,	11,	11,	11,	11,	11,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAALVSURBVDjLfZJNaFxlGIWf7853597JTJzQzDi9U6chPxCaOmi78idIlglEsEJJqFmIaDddlEK7EF3pKmJcdiUU3bmwXQiiGxsQQdBaF9HYUFucZP6SNHWS3uncO9+PiyDNGPDs3s3DOec94rOvflkyRrzRjo0fKQ7L9p6uBN/l2tuvnb4EII0VC7Mvl/K+7wshEvyfOga06nL9u7tvAvuAdmQ8z/PF58sP6fCAPXGH4cImKbeFsoad3RS/3c3SZ08gGeTy2WG0EeJfqIwVOE4CR0DsNBjObeIl/6IV7aG0QnoeI6WA+/fSDCRzGNPrSgIYwHEEkd0i6T7k78ctIt0hVgplQzzPI4xSDKYcLLanmCcAIbDKEOkuHRXxuBsRG4U2gOhijUY6Amt7W3UArN0H+OTZC9NYXCKjiZRGiCThXoZMskgi4YAVhyNYux8hkzhGtdEk69fpSzt4QvFop49mIyDIjiAdcegz0h4EuE9TTJ1i4/ZNBjI1hNa4nTzHRxfI+AHamP/O4omDOw/Oo42hG2uOtCTSfYVc4Rk27q9S2/wAIyMGt07xze5JdpvbT1248OmVlZWVq9JaiwCmT19CK833X/9A//EB5ubmCMOQjdFRfvw5R8JxmD33Kq50qdfr4tYt76NKpZKX4sBeV3/9g/ZWm9lzr/PJ1SV+v71KcDSgXC5Tr9dZ+niJRqPBsZGTauHsrKxUKucd3xUtTJfnCi/waD2ivz8LwOWL79GNFfPz80xOTjIzM8P09DRxHPPsS2dCgGw268mkFF98efPei7G25T83VTLRrvuAePf9D5VSSi4uLpJOpwEIwxCtDT99e631/FsL2Wq12hEHhzExMXFibGzs+tTU1NFSqWSklEeazSZra2t4nsfQ0BCFQgGl1M76+rqzvLzc6AGMj48ngiAop9PpG8ViMe95XgJwtre33wGquVzuBuBGUaRrtdpWGIZn/gGotkJJF2DBHwAAAABJRU5ErkJggg=='),
-(12,	13,	'Kimia',	12,	12,	12,	12,	'Books',	10,	12,	12,	12,	12,	12,	12,	12,	12,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFGSURBVDjLY/j//z8DJZhhcBtwa5ou062Zhp0PV7udvjVNO5lkA25M1Cx4czL//+/PJ/8/3xX+9myrqgfRBtycppf26mDs398fFv//cKXh/5vjdf/vLg74ui1PMZIoA+4utF7/893K/z+e1f3/8WLW/w8X6/5/e9Tw/+YM+w9EGXBrpknbl7ud/789yPr//VHx/2/34/9/uxX6/2y9xWe8BtycqmvycJXbqac7Au59uhn3/9ttv//f70b//3oDqLlB7/uiCAXcXrg1wyDm7jyrc98ezfz/9U7w/2833f6fmWD+5Xyz6YtLLWYvlscpBOMNxIerPc7/eLbw/6dLFv+/XXP/f3aK9deZ0cpJO4KleA/EyfISjMbH6zxO/nzZ9v/rTd//ZyZZfZ6bqBJLUkI62WvSenW+68vTvVYPlqarhg2DvEAMBgD1ZuZTUbWrEgAAAABJRU5ErkJggg=='),
-(13,	14,	'Blogpad',	13,	13,	13,	13,	'Movies',	92,	13,	13,	13,	13,	13,	13,	13,	13,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKpSURBVDjLpZPNa5xVFIef+877Tmcyk2Q+M0onSVOKnVQRMaBWNwq6c6NQ0IV/gLjspuBGkEKh2JUb14J24UZol5EKRaqhtjiNCamtDcSkNpkknUzn/bj3nOsibbF02bM5cBbP+R0ejvHe8ywVfnj6YqXdKP88NpJv4w14RbxHrCVNLdZasiQlTVNcnCJJTBYn7G7urK8u3X43nJ4Y7R5/cbI906oBoA8TiXpU/T5MFFGPiCDqsSL8fv3P2qW0vxQerJfazZEcK6t3cSJc7d7hjbkOC9dWeOWlKZxVrt24w+zsIS5f7jJ5aAIR5YX2OM3nnq+GxuxvjXKG7YEydIahRGwPLT9duYmIoj4go0hq8vS2+ky3qzhVjDGYL779xQcuJlCPCXIcf/UoO1keUX14BjhRnCpj4ZD5+QXSQQ+XWTb/6RP+urj6Safpz9THS7lms93K5Ytm/eYS63d7ZE5wThBRrMB777zGkWOH9dbiXndjr69/Lf12zjzS+Nm5C9+9/vLMx53D04yXRzg6ETyh65sLf1AYKbK59S9XF7oXvz/76fsAAcCJL3+cqlfKH7SadTKB8oGnfTcqoyyv9qhW6kTlxpuP5sHbJ8+beHv3h85Mq4AJwQSMFcxTgFZtlJ37A8JCiamDY9W5t059DhBc+uoj35mdmatWqmzsWkSVYvQkwHtPqRiRxDG9PaFYnWK0VjkBEAIkmQYbW7vc2nhAkjaYv7JInGQ4UVIrWGtJk5QsSVlZXqEUKUHQDx8DnLVYUTLnWL69hqjHOUVlv4sYCPIE+Rz9BxnjtYgwnz/yvwQZcZwx2TiAuBD1HhXFOYf3EU4EFY/3iqgyHMS4LOMx4O/rN5aH9zY7UaGEikNVUSt4l6HOgxfEOvCKqpIMBtxbW/sawDzrO/8H1LyIqK9H3tEAAAAASUVORK5CYII='),
-(14,	15,	'Abata',	14,	14,	14,	14,	'Shoes',	70,	14,	14,	14,	14,	14,	14,	14,	14,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIESURBVDjLjZNPTxNBGIexid9CEr8DBr8CHEiMVoomJiQkxBIM3dgIiaIESJTGGpVtyXIzHhoM4SIe9KAnEi4clQtJEczWFrbdP93d7s7u/JwZ7XYJBdnkyRxmfs/MvO9OD4AeDvuuMPoY/f/hKiMR5WKCvlarpRNCwiAI0A02D1mW38QlcUE/DzebTdi2HWEYBhqNBqrVqpBUKhUUCoVI0g5f4gK+wHVdeJ4nRo5lWdB1HbVaTQgcxwHfRFGUvxIuCKYfzmqZyZ2wKIO8fQ3/1Uv4Sy/QWliAO/sU9qMZmFMS3HfvT1xJ1ITOZJ9RpQi6+RH0y2fQb19BP23CVhRo+TysXA71+XkcMIk6fAfHK6tQVfWEoESXngNra0C5DHZJYGMDZiaD35IEi41qOo3vc3MoJ1Ooj92HpmkdQZiVEsHUAzl88hjY3gYIAdbXYQ0MoDo4CH1kBHssvH8jCf3eGKzDXzBNsyNoF/HH7WSJZLPA7i6wtQVnaAhmKoXjxUX8vDkMY3Qcnm6IInJOCS4nEte9QhF+RhInIRMTcFhYvZWCcXcUPmsl7w6H/w+nBFEb5SLc8TTo8jLq7M4m25mHfd8X8PC5AtHrXB5NdmwRrnfCcc4VCEnpA8jREasp6cpZAnrWO+hCGAn+Sa6xAtl84iJhttYSrzcm6OWSCzznNvzp9/4BgwKvG3Zq1eoAAAAASUVORK5CYII='),
-(15,	16,	'Twimbo',	15,	15,	15,	15,	'Shoes',	88,	15,	15,	15,	15,	15,	15,	15,	15,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGJSURBVDjLY/j//z8DJZiB6gaUl5fXw9g5OTkOqamp++Pi4uaHhYUpwMRtbGwKjI2N52tpaQmgazYoKir6n5+fnwATi46Onh8cHHwfWZ2BgUGAurq6AoYLiouLE3Jzc+enp6fDNQQEBCh4enr+t7OzC4CJqaioJGD1AtTJCkAn/wc6OQDJyeuBTt4PYisqKipISkoaYBiQmZkZkJycLABiA52838vLaz+Skx20tbX/y8vLK4iLiydgDcSEhISAiIgIB6CTHdzd3ROcnZ3/m5mZOcDkZWRk7ouIiOzn4+PDNADoZAegkx2QJYBOvg8MZbgrhISEEri5ue9jRCMwlAWATi4AOjkAyckKwFCuBzq5HuhksMFcXFwCLCwsBTjTQciUB0KV655fIpRwoqc9uGqec0kTxQCgZt2uHa++zDr49v+E3a//9+549b9j26v/zZue/89b/PhZ2rxHz/IXPf6fMe/h/6Ilj/+71984rR5+WhPFBYET7gnlL3tK0AWeDTeuwTTTJi/Q3QAAViCHY9kyiUsAAAAASUVORK5CYII='),
-(16,	17,	'Kare',	16,	16,	16,	16,	'Games',	87,	16,	16,	16,	16,	16,	16,	16,	16,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAMESURBVDjLXZNrSFNxGMYPgQQRfYv6EgR9kCgKohtFgRAVQUHQh24GQReqhViWlVYbZJlZmZmombfVpJXTdHa3reM8uszmWpqnmQuX5drmLsdjenR7ev9DR3Xgd3h43+d5/pw/HA4AN9zITSPUhJ14R0xn87+h2ZzJvZVInJpzAQOXQOQMt+/5rvhMCLXv9Vjrt1rSXitmwj+Jua1+Ox+2HfGNdGf6yW8l5sUKPNVcRsiaPDA22Ahv6/7Ae/0aKdviQ0G7B/c6f8Zg+gbfh079Mjno0MhS58lflOsgEjh3BXc+bM/0DzbvDwj314znt/bjof0HdPw3FBq6kP+oCxVNfdDZvqPsrQmf6zdFRtyPJgbrFoqUTeS+FnPrekpmiC2lS+QcUx+qrf0wmFzodYfgC0nwhoYh9oegfdmLsmYXHj7JhV23erS7ZNYHyibGLiLtXsO19BoHSiwu6Ok09gwFg/gy8BO/STOkKFBk7EWh2YkLeh5Hy4Ws2B2w157iDvOpxw4UPRPRTSfL41FIsow7ZeXwUFF4dBQ1L96A/xLEFf1HMC/LxAt25PH+VN0HXH1gh2dEwdBoBGO0OKvW4L7hCdIvavBSsMIRVHCi0ArmZZl4wbYrz/yHSq1Ql9vQLylUEoE7GMal3OuxMG/7CO848N6n4HheK5iXZeIFmy88Nu+8aYJG24G3ziB+0Ee7wwqemlvQ5w9hcAJwyUDtpwBOFLeBeVkmXpB0qlK9RV2HlLsCsvUivHRhQwoQjhCkA1TgJX1OK0JVzIN5WSZesPZ44XKia+P5BqSS4aq+BzZXABLdhyQrsJPOqv4MVcEbMA/zsky8gLHyYO7hI9laecOZWuzLfYXU2zzSblmQerMZqjwTknOeY9dlIw5kVcrMG/8XpoQgCEkOhwNNJn5i7bFSrFDpsCrFEIPpLacr0WxpibYIQpS86/8pMBqNswnJ6XSivqHBv3R3pmbxzgwz4Z+EaTXtwqIogrzjxIJ4QVVV1UyihxgjFv3/K09Bu/lEkBgg5rLZH+fT5dvfn7iFAAAAAElFTkSuQmCC'),
-(17,	18,	'Fivechat',	17,	17,	17,	17,	'Home',	97,	17,	17,	17,	17,	17,	17,	17,	17,	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAMZSURBVBgZBcFLaFxVHMDh3zn33Dt38poknTSJTVva1LaKxpQ07UJLKlQRTYVUcKNCwWUtCuJWXLkQxIVCl1kIIaCCG0GwXdgkamJS0hLHWs2znbym05m8JjP3nnv+fp8SEQBe+fT21XRT6h2t6ANCQAGgAFEgDuvcfLkot9R26ZOxG4MRgBIRAF7/fGLs2+t9z2itmgU8BAAARACEwm7MyHSZ9ZVaJTd3v3X8xmDNAABoT50KjNf81yaeVgoUiINEHNYK+3HCxacbOX/SMOkKdeJOlwY++KnFAAAotdQ0/PuEV4qeUE0snvg0+Yfp6XqD+rAdjQIcnU0Bg/2d/BKspxfW6oeViHDlm9euvvTsueGXT14Ev5WNSsjufo2NJzkWV6c4f+x9WjPddDc7GtMeKd9QqUa8+9WM9f5sGLsw0Nv33atnLnmSbqa8H7ARBcwXfKCF57sCbt0d5anMc1RshpVywmIx4njW5/vJtUh3tmc/7j/WG/yjEwqR5b8tw9/5mIe1efIHbpNvzHO64yCTuR9IBR5h4BEGPoIGpdGHs50XSiZiubKK5xqYXdwlCUvsHv2NOTPN1KMchw50UCwv4BtN4HmkjMYBImAC46fL1RLFxGeiuEdp2yMIY1pSLxBtHmX/8R/ICUecRPieAgFBkThIHJjt3Z3iKcKuOtvB0rrD+S0s5QP2ZqAuzNLeukZlfwctKZQojAYHhD4kVtC55fkfo60qtfI4qdQKKooIwibCjCXVPMXxTI2Zfx9wpK0XAZyAAL6nsZHFFFe3vvx58tc3L53tP1Jo81mq1YicQRpX6c4+pFaGO/kM2Z63mZuNcQDASIdPXHOY8S+mls5e7728+djMDvR56kRDiE0CGrOWuwtFVosHeevyZ6TSGURABO5tWsQJcdViAKa/nr137sPR6nbhQfrm8ijOWYyfhvoXOdTzHnPlOlTZ4gREK7RTGKOcTZw1AAAublv/aGgouxdLvYhoBBwAkEk7AEQg7SuUwvme2kmsyysRAaD/2s1rNpYhpdQZQeoAABAQQBAAEACqzrk7Gkb+B+5ReIstDYkxAAAAAElFTkSuQmCC');
-
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `user_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `phone`, `birthday`, `gender`, `role`, `avatar`) VALUES
-(1,	'luanminh',	'luan43@mail.mail',	'1234',	'0909-000-999',	'yesterday once more',	'apache',	'admin',	NULL),
-(2,	'minhluan',	'luan4334@mail.mail',	'1234',	'9090-999-000',	'1/1/0',	'attack helicopter',	'guest',	NULL),
-(3,	'Margalit',	'mclemo2@go.com',	'4qZls9hP',	'48',	'2/4/2023',	'Genderfluid',	'Construction Foreman',	'http://dummyimage.com/106x100.png/5fa2dd/ffffff'),
-(4,	'Xerxes',	'xhaibel3@last.fm',	'p5hLwBW',	'49095',	'6/17/2022',	'Male',	'Engineer',	'http://dummyimage.com/181x100.png/5fa2dd/ffffff'),
-(5,	'Blondell',	'bguilliland4@instagram.com',	'CzWz9XavhF',	'7688',	'8/27/2022',	'Female',	'Construction Foreman',	'http://dummyimage.com/120x100.png/dddddd/000000'),
-(6,	'Joy',	'jegentan5@cargocollective.com',	'SO8HVwx3Qe',	'11',	'12/28/2022',	'Female',	'Supervisor',	'http://dummyimage.com/119x100.png/5fa2dd/ffffff'),
-(7,	'Ashley',	'abugs6@ameblo.jp',	'FA62GXmeY',	'821',	'2/19/2023',	'Female',	'Surveyor',	'http://dummyimage.com/246x100.png/cc0000/ffffff'),
-(8,	'Alejandra',	'apell7@yolasite.com',	'dn07TuPss5RJ',	'32645',	'5/27/2022',	'Female',	'Architect',	'http://dummyimage.com/237x100.png/5fa2dd/ffffff'),
-(9,	'Hilly',	'hfiddy8@dailymail.co.uk',	'AsDRmEYWehEa',	'5',	'6/3/2022',	'Male',	'Construction Manager',	'http://dummyimage.com/183x100.png/dddddd/000000'),
-(10,	'Eliza',	'elangthorn9@digg.com',	'2zCN74',	'5',	'8/19/2022',	'Female',	'Construction Expeditor',	'http://dummyimage.com/159x100.png/ff4444/ffffff'),
-(11,	'Daveta',	'dbibbiea@discovery.com',	'vIrBwWIeLv0s',	'8175',	'11/13/2022',	'Female',	'Architect',	'http://dummyimage.com/248x100.png/dddddd/000000'),
-(12,	'Elliott',	'ethebesb@facebook.com',	'ChcTveM',	'950',	'7/11/2022',	'Male',	'Surveyor',	'http://dummyimage.com/223x100.png/dddddd/000000'),
-(13,	'Dori',	'dhyndesc@uiuc.edu',	'RL6d7oXy',	'05887',	'3/22/2023',	'Female',	'Engineer',	'http://dummyimage.com/221x100.png/ff4444/ffffff'),
-(14,	'Una',	'umarteletd@kickstarter.com',	'RtUO92XweGX',	'444',	'9/20/2022',	'Female',	'Architect',	'http://dummyimage.com/183x100.png/ff4444/ffffff'),
-(15,	'Bobby',	'botye@examiner.com',	'osGUw4p',	'10',	'1/22/2023',	'Agender',	'Engineer',	'http://dummyimage.com/227x100.png/dddddd/000000'),
-(16,	'Jesse',	'jchampkinsf@bluehost.com',	'2hz541P5mkH',	'5',	'1/25/2023',	'Male',	'Engineer',	'http://dummyimage.com/235x100.png/5fa2dd/ffffff'),
-(17,	'Petronilla',	'pkinneirg@bluehost.com',	'U2JAnBn',	'4275',	'4/26/2022',	'Female',	'Construction Expeditor',	'http://dummyimage.com/143x100.png/5fa2dd/ffffff'),
-(18,	'Salim',	'scaroh@independent.co.uk',	'UJ6Ai5',	'10689',	'7/1/2022',	'Male',	'Construction Foreman',	'http://dummyimage.com/249x100.png/dddddd/000000'),
-(19,	'Axe',	'areali@sciencedaily.com',	'8tiglr',	'61',	'6/21/2022',	'Male',	'Surveyor',	'http://dummyimage.com/235x100.png/ff4444/ffffff'),
-(20,	'Rozanne',	'rcastagnaj@123-reg.co.uk',	'3Tcka3VOGUMc',	'51946',	'7/18/2022',	'Female',	'Project Manager',	'http://dummyimage.com/142x100.png/dddddd/000000'),
-(21,	'Barth',	'bsheardownk@mysql.com',	'Ke67xcCI8VRZ',	'212',	'9/12/2022',	'Male',	'Estimator',	'http://dummyimage.com/239x100.png/dddddd/000000'),
-(22,	'Buddie',	'bosmarl@ibm.com',	'bDkfWmtVZC',	'8819',	'6/15/2022',	'Male',	'Subcontractor',	'http://dummyimage.com/125x100.png/ff4444/ffffff');
-
--- 2023-04-09 08:58:02
+{
+	"info": {
+		"_postman_id": "84f49e4a-e7ca-4f76-b7f7-8b0949aca8dd",
+		"name": "Api Airbnb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23671382"
+	},
+	"item": [
+		{
+			"name": "Hoang Hai",
+			"item": [
+				{
+					"name": "searchRoomById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/room/searchRoomById/:room_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"searchRoomById",
+								":room_id"
+							],
+							"variable": [
+								{
+									"key": "room_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchRoomPagination",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/room/searchRoomPagination?page (Chọn trang)=1&pageSize (Số item trong 1 trang)=2&roomName (Tên phòng)=a",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"searchRoomPagination"
+							],
+							"query": [
+								{
+									"key": "page (Chọn trang)",
+									"value": "1"
+								},
+								{
+									"key": "pageSize (Số item trong 1 trang)",
+									"value": "2"
+								},
+								{
+									"key": "roomName (Tên phòng)",
+									"value": "a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRoomById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/room/deleteRoomById/:room_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"deleteRoomById",
+								":room_id"
+							],
+							"variable": [
+								{
+									"key": "room_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateRoomById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"room_id\":2,\r\n    \"location_id\":2,\r\n    \"room_name\":\"Room 128\",\r\n    \"guests\":1,\r\n    \"bedrooms\":2,\r\n    \"beds\":4,\r\n    \"bathrooms\":2,\r\n    \"description\":\"Thoáng mát\",\r\n    \"price\":3000000,\r\n    \"washer\":1,\r\n    \"iron\":1,\r\n    \"television\":1,\r\n    \"air_con\":1,\r\n    \"wifi\":1,\r\n    \"kitchen\":0,\r\n    \"parking_lot\":1,\r\n    \"pool\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/room/updateRoomById",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"updateRoomById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadRoomImageById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileUpload",
+									"type": "file",
+									"src": "/C:/Users/HoangHai/Desktop/2023-04-06_214519.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/room/uploadRoomImageById/:room_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"uploadRoomImageById",
+								":room_id"
+							],
+							"variable": [
+								{
+									"key": "room_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getLocation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/location/getLocation",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"getLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchLocationById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/location/searchLocationById/:location_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"searchLocationById",
+								":location_id"
+							],
+							"variable": [
+								{
+									"key": "location_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchLocationPagination",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/location/searchLocationPagination?page (Chọn trang)=1&pageSize (Số item trong 1 trang)=2&locationName (Tên địa điểm)=oo",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"searchLocationPagination"
+							],
+							"query": [
+								{
+									"key": "page (Chọn trang)",
+									"value": "1"
+								},
+								{
+									"key": "pageSize (Số item trong 1 trang)",
+									"value": "2"
+								},
+								{
+									"key": "locationName (Tên địa điểm)",
+									"value": "oo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteLocationbyId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/location/deleteLocationbyId/:location_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"deleteLocationbyId",
+								":location_id"
+							],
+							"variable": [
+								{
+									"key": "location_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postLocation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"location_name\": \"Quận 3\",\r\n  \"city\": \"Hà Nội\",\r\n  \"country\": \"Việt Nam\",\r\n  \"picture\": \"picture 4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/location/postLocation",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"postLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateLocationById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"location_id\": 2,\r\n  \"location_name\": \"Quận Gò Vấp\",\r\n  \"city\": \"Hồ Chí Minh\",\r\n  \"country\": \"Việt Nam\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/location/updateLocationById",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"updateLocationById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadLocationImageById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileUpload",
+									"type": "file",
+									"src": "/C:/Users/HoangHai/Desktop/2023-04-07_223833.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/location/uploadLocationPictureById/:location_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"location",
+								"uploadLocationPictureById",
+								":location_id"
+							],
+							"variable": [
+								{
+									"key": "location_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Minh Luan",
+			"item": [
+				{
+					"name": "get comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/comment/getComment",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"comment",
+								"getComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get comment by room_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/comment/getCommentByRoom/:room_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"comment",
+								"getCommentByRoom",
+								":room_id"
+							],
+							"variable": [
+								{
+									"key": "room_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"name\",\r\n    \"email\": \"luan@mail.mail\",\r\n    \"password\": \"1234\",\r\n    \"phone\": \"1234\",\r\n    \"birthday\": \"meh\",\r\n    \"gender\": \"anti-air\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/api/auth/signup",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"luan@mail.mail\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/api/auth/login",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"test comment\",\r\n    \"star_rating\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/comment/postComment/:room_id/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"comment",
+								"postComment",
+								":room_id",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "room_id",
+									"value": "1"
+								},
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"test comment updated 2\",\r\n    \"star_rating\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/comment/updateComment/:comment_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"comment",
+								"updateComment",
+								":comment_id"
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/comment/deleteComment/:comment_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"comment",
+								"deleteComment",
+								":comment_id"
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"checkin\": \"2023-03-30T20:02:10.000Z\",\r\n    \"checkout\": \"2023-04-10T10:30:10.000Z\",\r\n    \"guests\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/booking/postBooking/:room_id/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"booking",
+								"postBooking",
+								":room_id",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "room_id",
+									"value": "2"
+								},
+								{
+									"key": "user_id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"checkin\": \"2023-03-30T20:02:10.000Z\",\r\n    \"checkout\": \"2023-04-12T10:30:10.000Z\",\r\n    \"guests\": 6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/booking/updateBooking/:booking_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"booking",
+								"updateBooking",
+								":booking_id"
+							],
+							"variable": [
+								{
+									"key": "booking_id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/booking/deleteBooking/:booking_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"booking",
+								"deleteBooking",
+								":booking_id"
+							],
+							"variable": [
+								{
+									"key": "booking_id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/booking/getBooking",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"booking",
+								"getBooking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get booking by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/booking/getBookingById/:booking_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"booking",
+								"getBookingById",
+								":booking_id"
+							],
+							"variable": [
+								{
+									"key": "booking_id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sy Bao",
+			"item": [
+				{
+					"name": "getBookingByUserId(user_id)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/booking/getBookingByUserId/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"booking",
+								"getBookingByUserId",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/user/getUser",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"getUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Gwenny\",\r\n  \"email\": \"gkissell01@oracle.com\",\r\n  \"password\": \"808-44-0971\",\r\n  \"phone\": \"612-332-9046\",\r\n  \"birthday\": \"8/24/2022\",\r\n  \"gender\": \"Non-binary\",\r\n  \"role\": \"Engineer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/user/addUser",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"addUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser (user_id)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/user/deleteUser/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"deleteUser",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userSearchPagination",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pageIndex\": 3,\r\n    \"pageSize\": 3,\r\n    \"keyword\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/user/getSearchPagination",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"getSearchPagination"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById (user_id)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/user/getUserById/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"getUserById",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser (user_id)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string234\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\",\r\n    \"avatar\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/user/updateUser/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"updateUser",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchUser (user_name)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"email\": \"string\",\r\n    \"password\": \"string\",\r\n    \"phone\": \"string\",\r\n    \"birthday\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"role\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/user/searchUser/:user_name",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"searchUser",
+								":user_name"
+							],
+							"variable": [
+								{
+									"key": "user_name",
+									"value": "bao"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadAvatar (user_id)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileUpload",
+									"type": "file",
+									"src": "/C:/Users/luong/Desktop/20230215223121_1.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/user/uploadAvatar/:user_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"uploadAvatar",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRoom",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/room/getRoom",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"getRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addRoom",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\": 1,\r\n    \"room_name\": \"string\",\r\n    \"guests\": 1,\r\n    \"bedrooms\": 1,\r\n    \"beds\": 1,\r\n    \"bathrooms\": 1,\r\n    \"description\": \"string\",\r\n    \"price\": 1,\r\n    \"washer\": 1,\r\n    \"iron\": 1,\r\n    \"television\": 1,\r\n    \"air_con\": 1,\r\n    \"wifi\": 1,\r\n    \"kitchen\": 1,\r\n    \"parking_lot\": 1,\r\n    \"pool\": 1,\r\n    \"image\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/room/addRoom",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"addRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRoomByLocationId (location_id)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/room/getRoomByLocationId/:location_id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"room",
+								"getRoomByLocationId",
+								":location_id"
+							],
+							"variable": [
+								{
+									"key": "location_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "localhost:8080/api",
+			"type": "string"
+		}
+	]
+}
