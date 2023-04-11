@@ -44,9 +44,11 @@ export class LocationController {
 
   @Get('/searchLocationPagination')
   searchLocationPagination(
-    @Query('page') page: number,
+    @Query('page (Chọn trang)') page: number,
+    @Query('pageSize (Số item trong 1 trang)') pageSize: number,
+    @Query('location_name (Tên vị trí)') locationName: string,
   ): Promise<{ message: string; data: LocationDto[] }> {
-    return this.locationService.searchLocationPagination(page);
+    return this.locationService.searchLocationPagination(page, pageSize, locationName);
   }
 
   @Get('/searchLocationById/:location_id')

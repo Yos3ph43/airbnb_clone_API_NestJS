@@ -46,15 +46,24 @@ export class LocationService {
 
   async searchLocationPagination(
     page: number,
+    pageSize: number,
+    locationName: string,
   ): Promise<{ message: string; data: LocationDto[] }> {
     try {
       const data = await this.prisma.location.findMany({
         //dùng take, skip có sẵn trong prisma để phân trang
-        take: 2, //số item trên 1 trang
-        skip: 2 * (page - 1), //khi chọn trang 4 thì bỏ qua 6 item
+        take: Number(pageSize), //số item muốn hiện trên 1 trang
+        skip: Number(pageSize) * (page - 1), //ví dụ: nếu muốn hiện 2 item trên 1 trang, khi chọn trang 4 thì bỏ qua 6 item
+        where: {
+          location_name: { contains: locationName },
+        },
       });
-      return { message: 'Kết quả phân trang ' + page, data };
+      return {
+        message: 'Kết quả phân trang ' + page,
+        data,
+      };
     } catch (error) {
+      console.error(error);
       throw new HttpException('Lỗi Backend', 500);
     }
   }
