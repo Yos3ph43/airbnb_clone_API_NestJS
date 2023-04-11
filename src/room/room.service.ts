@@ -48,11 +48,16 @@ export class RoomService {
     Time: 05/04/2023 */
   async searchRoomPagination(
     page: number,
+    pageSize: number,
+    roomName: string,
   ): Promise<{ message: string; data: RoomDto[] }> {
     try {
       const data = await this.prisma.room.findMany({
-        take: 2,
-        skip: 2 * (page - 1),
+        take: Number(pageSize),
+        skip: Number(pageSize) * (page - 1),
+        where: {
+          room_name: { contains: roomName },
+        },
       });
       return { message: 'Kết quả phân trang ' + page, data };
     } catch (error) {

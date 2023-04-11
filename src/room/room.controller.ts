@@ -46,9 +46,11 @@ export class RoomController {
     Time: 05/04/2023 */
   @Get('/searchRoomPagination')
   searchRoomPagination(
-    @Query('page') page: number,
+    @Query('page (Chọn trang)') page: number,
+    @Query('pageSize (Số item trong 1 trang)') pageSize: number,
+    @Query('roomName (Tên phòng)') roomName: string,
   ): Promise<{ message: string; data: RoomDto[] }> {
-    return this.roomService.searchRoomPagination(page);
+    return this.roomService.searchRoomPagination(page, pageSize, roomName);
   }
 
   @Get('/searchRoomById/:room_id')
