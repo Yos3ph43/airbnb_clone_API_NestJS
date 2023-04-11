@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "40e000f7-04e7-416d-bbeb-a2c0f81887b1",
+		"_postman_id": "84f49e4a-e7ca-4f76-b7f7-8b0949aca8dd",
 		"name": "Api Airbnb",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23671382"
@@ -84,7 +84,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/room/searchRoomPagination?page=2",
+							"raw": "{{domain}}/room/searchRoomPagination?page (Chọn trang)=1&pageSize (Số item trong 1 trang)=2&roomName (Tên phòng)=a",
 							"host": [
 								"{{domain}}"
 							],
@@ -94,8 +94,16 @@
 							],
 							"query": [
 								{
-									"key": "page",
+									"key": "page (Chọn trang)",
+									"value": "1"
+								},
+								{
+									"key": "pageSize (Số item trong 1 trang)",
 									"value": "2"
+								},
+								{
+									"key": "roomName (Tên phòng)",
+									"value": "a"
 								}
 							]
 						}
@@ -231,6 +239,16 @@
 				{
 					"name": "getLocation",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -249,6 +267,16 @@
 				{
 					"name": "searchLocationById",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -287,7 +315,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/location/searchLocationPagination?page=8",
+							"raw": "{{domain}}/location/searchLocationPagination?page (Chọn trang)=1&pageSize (Số item trong 1 trang)=2&locationName (Tên địa điểm)=oo",
 							"host": [
 								"{{domain}}"
 							],
@@ -297,8 +325,16 @@
 							],
 							"query": [
 								{
-									"key": "page",
-									"value": "8"
+									"key": "page (Chọn trang)",
+									"value": "1"
+								},
+								{
+									"key": "pageSize (Số item trong 1 trang)",
+									"value": "2"
+								},
+								{
+									"key": "locationName (Tên địa điểm)",
+									"value": "oo"
 								}
 							]
 						}
@@ -308,6 +344,16 @@
 				{
 					"name": "deleteLocationbyId",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -347,7 +393,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"location_name\": \"Quận 2\",\r\n  \"city\": \"Hà Nội\",\r\n  \"country\": \"Việt Nam\",\r\n  \"picture\": \"picture 4\"\r\n}",
+							"raw": "{\r\n  \"location_name\": \"Quận 3\",\r\n  \"city\": \"Hà Nội\",\r\n  \"country\": \"Việt Nam\",\r\n  \"picture\": \"picture 4\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -370,6 +416,16 @@
 				{
 					"name": "updateLocationById",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJfaWQiOjMsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJsdWFuQG1haWwubWFpbCIsInBhc3N3b3JkIjoiKioqKiIsInBob25lIjoiMTIzNCIsImJpcnRoZGF5IjoibWVoIiwiZ2VuZGVyIjoiYW50aS1haXIiLCJyb2xlIjoiYWRtaW4iLCJhdmF0YXIiOm51bGx9LCJpYXQiOjE2ODA3MDkwODIsImV4cCI6MTcxMjI2NjY4Mn0.alTaKaqmuofP1Y3x4tXWjhESJ56UIj-mRn3cWIywXLo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
