@@ -46,7 +46,7 @@ export class LocationController {
   searchLocationPagination(
     @Query('page (Chọn trang)') page: number,
     @Query('pageSize (Số item trong 1 trang)') pageSize: number,
-    @Query('location_name (Tên vị trí)') locationName: string,
+    @Query('locationName (Tên địa điểm)') locationName: string,
   ): Promise<{ message: string; data: LocationDto[] }> {
     return this.locationService.searchLocationPagination(page, pageSize, locationName);
   }
