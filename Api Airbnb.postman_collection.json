@@ -588,12 +588,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/auth/signup",
+							"raw": "{{domain}}/auth/signup",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
-								"api",
 								"auth",
 								"signup"
 							]
@@ -626,12 +625,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/auth/login",
+							"raw": "{{domain}}/auth/login",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
-								"api",
 								"auth",
 								"login"
 							]
